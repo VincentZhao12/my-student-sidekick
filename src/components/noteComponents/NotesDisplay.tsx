@@ -24,6 +24,7 @@ const NotesDisplay: FC<NotesDisplayProps> = ({
                     width={'3xs'}
                     style={{ whiteSpace: 'normal', wordBreak: 'break-word' }}
                     colorScheme={selectedIndex === index ? 'blue' : 'gray'}
+                    opacity={1}
                 >
                     {note}
                 </Button>

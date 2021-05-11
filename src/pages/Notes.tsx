@@ -1,6 +1,13 @@
-import { AddIcon } from '@chakra-ui/icons';
+import { AddIcon, CloseIcon, HamburgerIcon } from '@chakra-ui/icons';
 import { Container, VStack } from '@chakra-ui/layout';
-import { Button } from '@chakra-ui/react';
+import {
+    Button,
+    IconButton,
+    Menu,
+    MenuButton,
+    MenuList,
+    useDisclosure,
+} from '@chakra-ui/react';
 import React, { FC, useEffect, useState } from 'react';
 import NoteInput from '../components/noteComponents/NoteInput';
 import NotesDisplay from '../components/noteComponents/NotesDisplay';
@@ -14,6 +21,7 @@ const Notes: FC<NotesProps> = () => {
     const { currentUser, loggedIn } = useAuth();
     const [selectedNote, setSelectedNote] = useState(0);
     const [dummy, setDummy] = useState(0);
+    const { isOpen, onOpen, onClose } = useDisclosure();
 
     useEffect(() => {
         if (!loggedIn) {
@@ -33,6 +41,8 @@ const Notes: FC<NotesProps> = () => {
         }
     }, [currentUser, loggedIn, dummy]);
 
+    useEffect(() => console.log(isOpen), [isOpen]);
+
     const createNewNote = () => {
         setNotes([
             ...notes,
@@ -47,21 +57,6 @@ const Notes: FC<NotesProps> = () => {
 
     return (
         <Container flexDirection="row" display="flex" justifyContent="center">
-            <VStack width="lg">
-                <NotesDisplay
-                    noteTitles={notes.map((note) => note.title)}
-                    selectedIndex={selectedNote}
-                    onIndexChange={setSelectedNote}
-                />
-                <Button
-                    width="3xs"
-                    onClick={createNewNote}
-                    style={{ marginTop: '4vh' }}
-                >
-                    <AddIcon marginRight={'1.5'} /> Add Note
-                </Button>
-            </VStack>
-
             <NoteInput
                 defaultData={
                     notes[selectedNote] ? notes[selectedNote] : undefined
@@ -71,6 +66,39 @@ const Notes: FC<NotesProps> = () => {
                 }
                 onSave={() => setDummy(-dummy)}
             />
+            <Menu onClose={onClose}>
+                <MenuButton
+                    as={IconButton}
+                    size={'md'}
+                    icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
+                    aria-label={'Open Menu'}
+                    display={{ md: !isOpen ? 'none' : 'inherit' }}
+                    onClick={isOpen ? onClose : onOpen}
+                />
+                <MenuList>
+                    <VStack>
+                        <NotesDisplay
+                            noteTitles={notes.map((note) => note.title)}
+                            selectedIndex={selectedNote}
+                            onIndexChange={setSelectedNote}
+                        />
+                        <Button width="3xs" onClick={createNewNote} opacity={1}>
+                            <AddIcon marginRight={'1.5'} /> Create New Note
+                        </Button>
+                    </VStack>
+                </MenuList>
+            </Menu>
+
+            <VStack width="lg" display={{ base: 'none', md: 'flex' }}>
+                <NotesDisplay
+                    noteTitles={notes.map((note) => note.title)}
+                    selectedIndex={selectedNote}
+                    onIndexChange={setSelectedNote}
+                />
+                <Button width="3xs" onClick={createNewNote}>
+                    <AddIcon marginRight={'1.5'} /> Create New Note
+                </Button>
+            </VStack>
         </Container>
     );
 };

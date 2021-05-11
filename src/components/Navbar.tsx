@@ -1,4 +1,4 @@
-import React, { FC, ReactNode } from 'react';
+import React, { FC, ReactNode, useEffect } from 'react';
 import {
     Box,
     Flex,
@@ -77,7 +77,7 @@ const Navbar: FC = () => {
                     onClick={isOpen ? onClose : onOpen}
                 />
                 <HStack spacing={8} alignItems={'center'}>
-                    <Box fontSize="2xl" as={Link} to="/">
+                    <Box fontSize="xl" as={Link} to="/">
                         My Student Sidekick
                     </Box>
                     <HStack
@@ -104,10 +104,10 @@ const Navbar: FC = () => {
                             </Menu>
                         </>
                     ) : (
-                        <>
+                        <Flex display={{ base: 'none', md: 'flex' }}>
                             <NavLink to="/login">Log In</NavLink>
                             <NavLink to="/signup">Sign Up</NavLink>
-                        </>
+                        </Flex>
                     )}
                 </Flex>
             </Flex>
@@ -116,6 +116,12 @@ const Navbar: FC = () => {
                 <Box pb={4}>
                     <Stack as={'nav'} spacing={4}>
                         <Links />
+                        {!loggedIn && (
+                            <>
+                                <NavLink to="/login">Log In</NavLink>
+                                <NavLink to="/signup">Sign Up</NavLink>
+                            </>
+                        )}
                     </Stack>
                 </Box>
             ) : (

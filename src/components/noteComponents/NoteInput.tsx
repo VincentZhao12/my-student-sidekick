@@ -7,6 +7,7 @@ import { Button } from '@chakra-ui/button';
 import { Input } from '@chakra-ui/input';
 import { useAuth } from '../../contexts/AuthContext';
 import { db } from '../../firebase';
+import { useMediaQuery } from '@chakra-ui/media-query';
 
 export interface NoteInputProps {
     noteId: string;
@@ -22,6 +23,8 @@ const NoteInput: FC<NoteInputProps> = ({ noteId, onSave, defaultData }) => {
     const [saved, setSaved] = useState<boolean>(true);
     const { loggedIn, currentUser } = useAuth();
     const [defaultValue, setDefaultValue] = useState();
+
+    const [largeScreen] = useMediaQuery('(min-width: 600px)');
 
     useEffect(() => {
         if (defaultData) {
@@ -69,7 +72,10 @@ const NoteInput: FC<NoteInputProps> = ({ noteId, onSave, defaultData }) => {
     };
 
     return (
-        <Container width="lg">
+        <Container
+            width={largeScreen ? 'lg' : 'xs'}
+            marginRight={largeScreen ? '10' : '5'}
+        >
             <Input
                 placeholder="Note Title"
                 onChange={(e) => {
