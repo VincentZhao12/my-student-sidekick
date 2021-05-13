@@ -9,8 +9,8 @@ import {
     useDisclosure,
 } from '@chakra-ui/react';
 import React, { FC, useEffect, useState } from 'react';
-import NoteInput from '../components/noteComponents/NoteInput';
-import NotesDisplay from '../components/noteComponents/NotesDisplay';
+import NoteInput from '../components/note-components/NoteInput';
+import NotesDisplay from '../components/note-components/NotesDisplay';
 import { useAuth } from '../contexts/AuthContext';
 import { db } from '../firebase';
 
