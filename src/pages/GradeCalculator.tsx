@@ -10,6 +10,7 @@ import {
 } from '@chakra-ui/react';
 import WeightedCalc from '../components/grade-components/WeightedCalc';
 import PointBasedCalc from '../components/grade-components/PointBasedCalc';
+import FinalCalc from '../components/grade-components/FinalCalc';
 
 export interface GradeCalculatorProps {}
 
@@ -30,6 +31,9 @@ const GradeCalculator: FC<GradeCalculatorProps> = () => {
                     </TabPanel>
                     <TabPanel>
                         <PointBasedCalc />
+                    </TabPanel>
+                    <TabPanel>
+                        <FinalCalc />
                     </TabPanel>
                 </TabPanels>
             </Tabs>
