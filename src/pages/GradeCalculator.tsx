@@ -1,19 +1,34 @@
 import React, { FC } from 'react';
-import { Container, Heading } from '@chakra-ui/react';
-import Category from '../components/grade-components/Category';
+import {
+    Container,
+    Heading,
+    Tab,
+    TabList,
+    TabPanel,
+    TabPanels,
+    Tabs,
+} from '@chakra-ui/react';
+import WeightedCalc from '../components/grade-components/WeightedCalc';
 
 export interface GradeCalculatorProps {}
 
 const GradeCalculator: FC<GradeCalculatorProps> = () => {
     return (
-        <Container
-            justifyContent="center"
-            justifyItems="center"
-            display="flex"
-            flexDirection="column"
-        >
-            <Heading>Weighted Grade Calculator</Heading>
-            <Category />
+        <Container centerContent maxW="container.xl">
+            <Heading>Grade Calculators</Heading>
+            <Tabs isFitted marginTop="1">
+                <TabList>
+                    <Tab>Weighted</Tab>
+                    <Tab>Point Based</Tab>
+                    <Tab>Needed Final Score</Tab>
+                    <Tab>Needed Test Score</Tab>
+                </TabList>
+                <TabPanels>
+                    <TabPanel>
+                        <WeightedCalc />
+                    </TabPanel>
+                </TabPanels>
+            </Tabs>
         </Container>
     );
 };
