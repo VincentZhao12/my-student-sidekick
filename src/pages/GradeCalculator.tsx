@@ -11,6 +11,7 @@ import {
 import WeightedCalc from '../components/grade-components/WeightedCalc';
 import PointBasedCalc from '../components/grade-components/PointBasedCalc';
 import FinalCalc from '../components/grade-components/FinalCalc';
+import TestCalc from '../components/grade-components/TestCalc';
 
 export interface GradeCalculatorProps {}
 
@@ -34,6 +35,9 @@ const GradeCalculator: FC<GradeCalculatorProps> = () => {
                     </TabPanel>
                     <TabPanel>
                         <FinalCalc />
+                    </TabPanel>
+                    <TabPanel>
+                        <TestCalc />
                     </TabPanel>
                 </TabPanels>
             </Tabs>
