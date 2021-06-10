@@ -1,7 +1,7 @@
 import { Button, IconButton } from '@chakra-ui/button';
 import { AddIcon } from '@chakra-ui/icons';
-import { Container, Flex, Heading, Text } from '@chakra-ui/layout';
-import { Table, Td, Th, Thead, Tr } from '@chakra-ui/table';
+import { Container, Text } from '@chakra-ui/layout';
+import { Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/table';
 import { Tooltip } from '@chakra-ui/tooltip';
 import React, { FC, useEffect, useState } from 'react';
 import Card from '../Card';
@@ -32,19 +32,23 @@ const WeightedCalc: FC<WeightedCalcProps> = () => {
         <Container centerContent>
             <Table>
                 <Thead>
-                    <Th>Grade %</Th>
-                    <Th>Weight %</Th>
+                    <Tr>
+                        <Th>Grade %</Th>
+                        <Th>Weight %</Th>
+                    </Tr>
                 </Thead>
-                {categories.map((category, index) => (
-                    <CategoryInput
-                        key={index}
-                        onChange={(category) => {
-                            let changed = categories;
-                            changed[index] = category;
-                            setCategories(changed);
-                        }}
-                    />
-                ))}
+                <Tbody>
+                    {categories.map((category, index) => (
+                        <CategoryInput
+                            key={index}
+                            onChange={(category) => {
+                                let changed = categories;
+                                changed[index] = category;
+                                setCategories(changed);
+                            }}
+                        />
+                    ))}
+                </Tbody>
             </Table>
             <Tooltip label="Add Category">
                 <IconButton
@@ -94,7 +98,7 @@ const CategoryInput: FC<CategoryInputProps> = ({ onChange }) => {
 
     useEffect(() => {
         onChange && onChange(category ? category : { grade: 0, weight: 0 });
-    }, [category]);
+    }, [category, onChange]);
 
     return (
         <Tr>
