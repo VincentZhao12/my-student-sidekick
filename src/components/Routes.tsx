@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import { Route } from 'react-router-dom';
+import Bibliography from '../pages/Bibliography';
 import GradeCalculator from '../pages/GradeCalculator';
 import Login from '../pages/Login';
 import Notes from '../pages/Notes';
@@ -14,6 +15,7 @@ const Routes: FC<RoutesProps> = () => {
             <Route exact path="/login" component={Login} />
             <Route exact path="/signup" component={Signup} />
             <Route exact path="/grade-calculator" component={GradeCalculator} />
+            <Route exact path="/create-bibliography" component={Bibliography} />
         </>
     );
 };
