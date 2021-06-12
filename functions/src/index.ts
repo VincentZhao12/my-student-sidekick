@@ -34,7 +34,8 @@ exports.fetchWebsiteInfo = functions.https.onCall(async (data, context) => {
             const prop = meta.getAttribute('property');
             const content = meta.content;
 
-            if (prop === 'og:url') foundData.url = content;
+            if (prop === 'og:title') foundData.title = content;
+            else if (prop === 'og:url') foundData.url = content;
             else if (prop === 'og:site_name') foundData.siteName = content;
             else if (
                 prop === 'article:published_time' ||
