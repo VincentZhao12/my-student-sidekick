@@ -13,6 +13,7 @@ export interface NumberInputWrapperProps {
     placeholder?: string;
     defaultValue?: number;
     backgroundColor?: BackgroundProps['backgroundColor'];
+    value?: number;
 }
 
 const NumberInputWrapper: FC<NumberInputWrapperProps> = ({
@@ -20,11 +21,13 @@ const NumberInputWrapper: FC<NumberInputWrapperProps> = ({
     placeholder,
     backgroundColor,
     defaultValue,
+    value,
 }) => {
     return (
         <NumberInput
             onChange={(str, num) => onChange && onChange(num)}
             defaultValue={defaultValue}
+            value={value === undefined ? undefined : value + ''}
         >
             <NumberInputField
                 placeholder={placeholder}

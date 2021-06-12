@@ -31,8 +31,6 @@ const SearchWebsite: FC<SearchWebsiteProps> = ({ marginTop }) => {
 
         setLoading(false);
 
-        console.log(citationData);
-
         setNewCitation && setNewCitation(citationData);
         history.push('/create-bibliography/cite-website/manual-citation');
     };

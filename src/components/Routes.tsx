@@ -28,6 +28,11 @@ const Routes: FC<RoutesProps> = () => {
                 path="/create-bibliography/cite-website/manual-citation"
                 component={ManualCitation}
             />
+            <Route
+                exact
+                path="/create-bibliography/cite-website/manual-citation/edit:index"
+                component={ManualCitation}
+            />
         </>
     );
 };

@@ -1,5 +1,5 @@
 import { Flex, Select } from '@chakra-ui/react';
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { DateFormat } from '../../utils/BibliographyUtils';
 import NumberInputWrapper from '../NumberInputWrapper';
 
@@ -13,13 +13,18 @@ const DateInput: FC<DateInputProps> = ({ onChange, defaultValue }) => {
     const [month, setMonth] = useState<string>();
     const [year, setYear] = useState<number>();
 
+    useEffect(() => {
+        setDay(defaultValue?.day);
+        setMonth(defaultValue?.month);
+        setYear(defaultValue?.year);
+
+        console.log(defaultValue);
+    }, [defaultValue]);
+
     return (
         <Flex>
             <Select
-                placeholder="Month"
-                defaultValue={
-                    defaultValue?.month !== '' ? defaultValue?.month : undefined
-                }
+                value={month}
                 onChange={(e) => {
                     setMonth(e.target.value);
                     onChange &&
@@ -54,9 +59,7 @@ const DateInput: FC<DateInputProps> = ({ onChange, defaultValue }) => {
                         });
                 }}
                 placeholder={'Day'}
-                defaultValue={
-                    defaultValue?.day !== 0 ? defaultValue?.day : undefined
-                }
+                value={day}
             />
             <NumberInputWrapper
                 onChange={(year) => {
@@ -69,9 +72,7 @@ const DateInput: FC<DateInputProps> = ({ onChange, defaultValue }) => {
                         });
                 }}
                 placeholder={'Year'}
-                defaultValue={
-                    defaultValue?.year !== 0 ? defaultValue?.year : undefined
-                }
+                value={year}
             />
         </Flex>
     );

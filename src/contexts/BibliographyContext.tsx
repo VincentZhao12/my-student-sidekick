@@ -1,11 +1,4 @@
-import { useEventListenerMap } from '@chakra-ui/hooks';
-import React, {
-    createContext,
-    FC,
-    useContext,
-    useEffect,
-    useState,
-} from 'react';
+import React, { createContext, FC, useContext, useState } from 'react';
 import {
     BibliographyData,
     CitationData,
@@ -15,6 +8,7 @@ import {
 const initValue: BibliographyData = {
     citations: [],
     addCitation: (citation) => {},
+    deleteCitation: (index) => {},
 };
 const BibliographyContext = createContext(initValue);
 
@@ -47,11 +41,34 @@ export const BibliographyProvider: FC = ({ children }) => {
         return newCitations.indexOf(citation);
     };
 
+    const deleteCitation = (index: number) => {
+        let newCitations = [...citations];
+
+        console.log(newCitations);
+
+        if (index >= 0 && index < newCitations.length)
+            newCitations.splice(index, 1);
+
+        console.log(newCitations);
+
+        setCitations(newCitations);
+    };
+
+    const editCitation = (index: number, citation: CitationData) => {
+        if (index >= 0 && index < citations.length) {
+            let newCitations = citations;
+            newCitations[index] = citation;
+            setCitations(newCitations);
+        }
+    };
+
     const value: BibliographyData = {
         citations,
         addCitation,
+        deleteCitation,
         newCitation,
         setNewCitation,
+        editCitation,
     };
     return (
         <BibliographyContext.Provider value={value}>

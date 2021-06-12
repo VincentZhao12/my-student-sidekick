@@ -1,16 +1,22 @@
-import { Flex, Input } from '@chakra-ui/react';
+import { DeleteIcon } from '@chakra-ui/icons';
+import { Flex, IconButton, Input, Tooltip } from '@chakra-ui/react';
 import React, { FC, useState } from 'react';
 import { Name } from '../../utils/BibliographyUtils';
 
 export interface AuthorInputProps {
     onChange?: (names: Name) => any;
     defaultValue?: Name;
+    onDelete: () => any;
 }
 
-const AuthorInput: FC<AuthorInputProps> = ({ onChange, defaultValue }) => {
-    const [first, setFirst] = useState('');
-    const [middle, setMiddle] = useState('');
-    const [last, setLast] = useState('');
+const AuthorInput: FC<AuthorInputProps> = ({
+    onChange,
+    defaultValue,
+    onDelete,
+}) => {
+    const [first, setFirst] = useState(defaultValue?.first);
+    const [middle, setMiddle] = useState(defaultValue?.middle);
+    const [last, setLast] = useState(defaultValue?.last);
 
     return (
         <Flex>
@@ -21,7 +27,7 @@ const AuthorInput: FC<AuthorInputProps> = ({ onChange, defaultValue }) => {
                         onChange({
                             first: e.target.value,
                             middle,
-                            last,
+                            last: last || '',
                         });
                 }}
                 placeholder="First Name"
@@ -32,9 +38,9 @@ const AuthorInput: FC<AuthorInputProps> = ({ onChange, defaultValue }) => {
                     setMiddle(e.target.value);
                     onChange &&
                         onChange({
-                            first,
+                            first: first || '',
                             middle: e.target.value,
-                            last,
+                            last: last || '',
                         });
                 }}
                 placeholder="Middle Name"
@@ -45,7 +51,7 @@ const AuthorInput: FC<AuthorInputProps> = ({ onChange, defaultValue }) => {
                     setLast(e.target.value);
                     onChange &&
                         onChange({
-                            first,
+                            first: first || '',
                             middle,
                             last: e.target.value,
                         });
@@ -53,6 +59,14 @@ const AuthorInput: FC<AuthorInputProps> = ({ onChange, defaultValue }) => {
                 placeholder="Last Name"
                 defaultValue={defaultValue?.last}
             />
+            <Tooltip label="Delete Author">
+                <IconButton
+                    aria-label="Delete Author"
+                    icon={<DeleteIcon />}
+                    colorScheme="red"
+                    onClick={onDelete}
+                />
+            </Tooltip>
         </Flex>
     );
 };
