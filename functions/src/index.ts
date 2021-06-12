@@ -27,12 +27,14 @@ exports.fetchWebsiteInfo = functions.https.onCall(async (data, context) => {
         const text = await response.text();
         const dom = await new JSDOM(text);
 
+        foundData.title =
+            dom.window.document.querySelector('title')?.textContent || '';
+
         dom.window.document.querySelectorAll('meta').forEach((meta) => {
             const prop = meta.getAttribute('property');
             const content = meta.content;
 
-            if (prop === 'og:title') foundData.title = content;
-            else if (prop === 'og:url') foundData.url = content;
+            if (prop === 'og:url') foundData.url = content;
             else if (prop === 'og:site_name') foundData.siteName = content;
             else if (
                 prop === 'article:published_time' ||
@@ -80,6 +82,14 @@ exports.fetchWebsiteInfo = functions.https.onCall(async (data, context) => {
                     foundData.date = scriptData.datePublished;
             }
         });
+
+        if (!foundData.date)
+            foundData.date =
+                dom.window.document
+                    .querySelector('time')
+                    ?.getAttribute('datetime') || '';
+
+        console.log(foundData);
     } catch (error) {
         console.log(error);
     }
