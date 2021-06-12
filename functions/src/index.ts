@@ -64,11 +64,9 @@ exports.fetchWebsiteInfo = functions.https.onCall(async (data, context) => {
                 if (scriptData['@graph']) scriptData = scriptData['@graph'][0];
 
                 const authors = scriptData.author;
-                if (!foundData.author) {
-                    if (Array.isArray(authors))
-                        foundData.author = authors.map((author) => author.name);
-                    else if (authors) foundData.author = authors.name;
-                }
+                if (Array.isArray(authors))
+                    foundData.author = authors.map((author) => author.name);
+                else if (authors) foundData.author = authors.name;
 
                 if (
                     scriptData['@type'] === 'Organization' ||
