@@ -1,10 +1,10 @@
 import { Alert, AlertIcon } from '@chakra-ui/alert';
 import { Button, IconButton } from '@chakra-ui/button';
 import { CopyIcon, DeleteIcon, EditIcon } from '@chakra-ui/icons';
-import { Container, Heading, VStack } from '@chakra-ui/layout';
+import { Container, Heading, VStack, HStack } from '@chakra-ui/layout';
 import { Flex, Tooltip } from '@chakra-ui/react';
 import parse from 'html-react-parser';
-import React, { FC, useEffect, useRef } from 'react';
+import React, { FC, useRef } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { useBibliography } from '../contexts/BibliographyContext';
 import { createCitation } from '../utils/BibliographyUtils';
@@ -15,9 +15,21 @@ export interface BibliographyProps {}
 const Bibliography: FC<BibliographyProps> = () => {
     const { citations } = useBibliography();
 
-    useEffect(() => {
-        console.log(citations);
-    }, [citations]);
+    const ref = useRef<HTMLDivElement>(null);
+
+    const copyCitations = () => {
+        const listener = (e: ClipboardEvent) => {
+            e.clipboardData?.setData('text/html', ref.current?.innerHTML || '');
+            e.clipboardData?.setData(
+                'text/plain',
+                ref.current?.innerHTML || '',
+            );
+            e.preventDefault();
+        };
+        document.addEventListener('copy', listener);
+        document.execCommand('copy');
+        document.removeEventListener('copy', listener);
+    };
 
     return (
         <Container centerContent>
@@ -35,15 +47,39 @@ const Bibliography: FC<BibliographyProps> = () => {
                     </CitationText>
                 ))
             )}
-            <Button
-                width="inherit"
-                as={Link}
-                to="/create-bibliography/cite-website"
-                colorScheme="green"
-                marginTop="2vh"
-            >
-                Cite a Website
-            </Button>
+            <div ref={ref} style={{ display: 'none' }}>
+                {citations.map((citation, index) => (
+                    <p
+                        style={{
+                            fontFamily:
+                                'Times New Roman, Tinos, Liberation Serif, serif',
+                            fontSize: '12pt',
+                            lineHeight: '2',
+                            color: 'black',
+                            fontWeight: 'normal',
+                        }}
+                        key={index}
+                    >
+                        {parse(createCitation(citation))}
+                    </p>
+                ))}
+            </div>
+            <HStack marginTop="2vh">
+                <Button
+                    as={Link}
+                    to="/create-bibliography/cite-website"
+                    colorScheme="green"
+                >
+                    Cite a Website
+                </Button>
+                <Button
+                    onClick={copyCitations}
+                    colorScheme="blue"
+                    disabled={!citations || !citations.length}
+                >
+                    Copy All Citations
+                </Button>
+            </HStack>
         </Container>
     );
 };
@@ -59,14 +95,14 @@ const CitationText: FC<CitationTextProps> = ({ index, children }) => {
     const { deleteCitation } = useBibliography();
 
     const handleCopyCitation = () => {
-        function listener(e: ClipboardEvent) {
+        const listener = (e: ClipboardEvent) => {
             e.clipboardData?.setData('text/html', ref.current?.innerHTML || '');
             e.clipboardData?.setData(
                 'text/plain',
                 ref.current?.innerHTML || '',
             );
             e.preventDefault();
-        }
+        };
         document.addEventListener('copy', listener);
         document.execCommand('copy');
         document.removeEventListener('copy', listener);
@@ -77,7 +113,7 @@ const CitationText: FC<CitationTextProps> = ({ index, children }) => {
             <Flex marginTop="2vh">
                 <p className="citation">{children}</p>
                 <VStack>
-                    <Tooltip lable="Copy Citation">
+                    <Tooltip label="Copy Citation">
                         <IconButton
                             icon={<CopyIcon />}
                             aria-label="Copy Citation"
@@ -85,7 +121,7 @@ const CitationText: FC<CitationTextProps> = ({ index, children }) => {
                             colorScheme="blue"
                         />
                     </Tooltip>
-                    <Tooltip lable="Edit Citation">
+                    <Tooltip label="Edit Citation">
                         <IconButton
                             icon={<EditIcon />}
                             aria-label="Edit Citation"

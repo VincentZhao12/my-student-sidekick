@@ -9,12 +9,3 @@
     user-select: none;
     font-size: 12pt;
 }
-
-@keyframes fadeInBlue {
-    0% {
-        background-color: inherit;
-    }
-    100% {
-        background-color: #4299e1a6;
-    }
-}

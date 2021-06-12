@@ -111,7 +111,6 @@ const ManualCitation: FC<ManualCitationProps> = ({ match }) => {
                             let changed = [...author];
                             changed.splice(index, 1);
                             setAuthor(changed);
-                            console.log(author);
                         }}
                     />
                 ))}

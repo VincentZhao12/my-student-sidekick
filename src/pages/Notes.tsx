@@ -41,8 +41,6 @@ const Notes: FC<NotesProps> = () => {
         }
     }, [currentUser, loggedIn, dummy]);
 
-    useEffect(() => console.log(isOpen), [isOpen]);
-
     const createNewNote = () => {
         setNotes([
             ...notes,

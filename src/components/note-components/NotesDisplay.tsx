@@ -15,7 +15,12 @@ const NotesDisplay: FC<NotesDisplayProps> = ({
     selectedIndex,
 }) => {
     return (
-        <Box height="xl" overflow="scroll" className="customScroll">
+        <Box
+            height="xl"
+            overflowY="scroll"
+            className="customScroll"
+            bg={'gray.700'}
+        >
             <VStack>
                 {noteTitles.map((note, index) => (
                     <Button

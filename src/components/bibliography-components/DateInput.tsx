@@ -17,8 +17,6 @@ const DateInput: FC<DateInputProps> = ({ onChange, defaultValue }) => {
         setDay(defaultValue?.day);
         setMonth(defaultValue?.month);
         setYear(defaultValue?.year);
-
-        console.log(defaultValue);
     }, [defaultValue]);
 
     return (

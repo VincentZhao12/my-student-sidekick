@@ -42,7 +42,7 @@ export const createCitation: (citation?: CitationData) => string = (
         result += '. ';
     }
 
-    result += `"${citation?.title}". `;
+    result += `<q>${citation?.title}</q>. `;
 
     if (citation?.siteName) result += `${citation?.siteName.italics()}, `;
 

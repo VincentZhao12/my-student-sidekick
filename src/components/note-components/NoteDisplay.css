@@ -1,9 +1,11 @@
 .customScroll::-webkit-scrollbar {
     width: 1em;
+    height: 30%;
 }
 
 .customScroll::-webkit-scrollbar-track {
-    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.15);
+    /* box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.15); */
+    background-color: #171923;
 }
 
 .customScroll::-webkit-scrollbar-thumb {
@@ -11,5 +13,5 @@
     border-radius: 5vh;
 }
 .customScroll::-webkit-scrollbar-corner {
-    background-color: inherit;
+    background-color: #171923;
 }
