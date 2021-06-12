@@ -5,6 +5,8 @@ import GradeCalculator from '../pages/GradeCalculator';
 import Login from '../pages/Login';
 import Notes from '../pages/Notes';
 import Signup from '../pages/Signup';
+import CiteWebsite from './bibliography-components/CiteWebsite';
+import ManualCitation from './bibliography-components/ManualCitation';
 
 export interface RoutesProps {}
 
@@ -16,6 +18,16 @@ const Routes: FC<RoutesProps> = () => {
             <Route exact path="/signup" component={Signup} />
             <Route exact path="/grade-calculator" component={GradeCalculator} />
             <Route exact path="/create-bibliography" component={Bibliography} />
+            <Route
+                exact
+                path="/create-bibliography/cite-website"
+                component={CiteWebsite}
+            />
+            <Route
+                exact
+                path="/create-bibliography/cite-website/manual-citation"
+                component={ManualCitation}
+            />
         </>
     );
 };
