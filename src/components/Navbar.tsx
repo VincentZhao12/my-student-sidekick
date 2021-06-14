@@ -17,6 +17,7 @@ import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { ReactComponent as UserIcon } from '../images/user.svg';
+import { ReactComponent as Logo } from '../images/logo.svg';
 
 type LinkData = {
     to: string;
@@ -78,6 +79,7 @@ const Navbar: FC = () => {
                 />
                 <HStack spacing={8} alignItems={'center'}>
                     <Box fontSize="xl" as={Link} to="/">
+                        <Logo />
                         My Student Sidekick
                     </Box>
                     <HStack
