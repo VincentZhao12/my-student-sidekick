@@ -1,7 +1,8 @@
 import { Container, Spacer, Stack, Text } from '@chakra-ui/layout';
-import { Button } from '@chakra-ui/react';
+import { Button, Flex, HStack } from '@chakra-ui/react';
 import React, { FC, useState } from 'react';
 import NumberInputWrapper from '../NumberInputWrapper';
+import Instructions from './Instructions';
 
 export interface FinalCalcProps {}
 
@@ -39,14 +40,23 @@ const FinalCalc: FC<FinalCalcProps> = () => {
                     <Spacer />
                     <NumberInputWrapper onChange={setWeight} />
                 </Container>
-                <Button
-                    marginTop="3"
-                    colorScheme="green"
-                    width="inherit"
-                    onClick={calculateGrade}
-                >
-                    Calculate
-                </Button>
+                <HStack>
+                    <Button
+                        colorScheme="primary"
+                        width="md"
+                        onClick={calculateGrade}
+                    >
+                        Calculate
+                    </Button>
+                    <Spacer />
+                    <Instructions title="How do I use this?">
+                        Enter your current grade in the class, the grade that
+                        you want in the class, and the percentage of your grade
+                        that the final is worth to see how much you need on the
+                        final.
+                    </Instructions>
+                </HStack>
+
                 {show && (
                     <Container centerContent>
                         <Text fontSize="3xl">

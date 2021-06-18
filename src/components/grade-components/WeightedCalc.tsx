@@ -1,11 +1,12 @@
 import { Button, IconButton } from '@chakra-ui/button';
-import { AddIcon } from '@chakra-ui/icons';
+import { AddIcon, DeleteIcon } from '@chakra-ui/icons';
 import { Container, Text } from '@chakra-ui/layout';
 import { Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/table';
 import { Tooltip } from '@chakra-ui/tooltip';
 import React, { FC, useEffect, useState } from 'react';
 import Card from '../Card';
 import NumberInputWrapper from '../NumberInputWrapper';
+import Instructions from './Instructions';
 
 export interface WeightedCalcProps {}
 
@@ -35,6 +36,13 @@ const WeightedCalc: FC<WeightedCalcProps> = () => {
                     <Tr>
                         <Th>Grade %</Th>
                         <Th>Weight %</Th>
+                        <Th>
+                            <Instructions title="How do I use this?">
+                                Calculate your grade for a class with a weighted
+                                gradebook. Enter your grades in each weighted
+                                category and how much each category is worth.
+                            </Instructions>
+                        </Th>
                     </Tr>
                 </Thead>
                 <Tbody>
@@ -46,6 +54,11 @@ const WeightedCalc: FC<WeightedCalcProps> = () => {
                                 changed[index] = category;
                                 setCategories(changed);
                             }}
+                            onRemove={() => {
+                                let removed = [...categories];
+                                removed.splice(index, 1);
+                                setCategories(removed);
+                            }}
                         />
                     ))}
                 </Tbody>
@@ -55,7 +68,8 @@ const WeightedCalc: FC<WeightedCalcProps> = () => {
                     icon={<AddIcon />}
                     aria-label="Add Category"
                     width="inherit"
-                    colorScheme="blue"
+                    colorScheme="secondary"
+                    variant="outline"
                     onClick={() =>
                         setCategories([...categories, { grade: 0, weight: 0 }])
                     }
@@ -64,7 +78,7 @@ const WeightedCalc: FC<WeightedCalcProps> = () => {
 
             <Button
                 marginTop="3"
-                colorScheme="green"
+                colorScheme="primary"
                 width="inherit"
                 onClick={calculateGrade}
             >
@@ -91,9 +105,10 @@ interface Category {
 
 interface CategoryInputProps {
     onChange?: (category: Category) => void;
+    onRemove?: () => any;
 }
 
-const CategoryInput: FC<CategoryInputProps> = ({ onChange }) => {
+const CategoryInput: FC<CategoryInputProps> = ({ onChange, onRemove }) => {
     const [category, setCategory] = useState<Category>();
 
     useEffect(() => {
@@ -119,6 +134,16 @@ const CategoryInput: FC<CategoryInputProps> = ({ onChange }) => {
                             : setCategory({ weight: num, grade: 0 })
                     }
                 />
+            </Td>
+            <Td>
+                <Tooltip label="Remove Category">
+                    <IconButton
+                        aria-label="Remove category"
+                        icon={<DeleteIcon />}
+                        colorScheme="danger"
+                        onClick={onRemove}
+                    />
+                </Tooltip>
             </Td>
         </Tr>
     );

@@ -19,7 +19,7 @@ const GradeCalculator: FC<GradeCalculatorProps> = () => {
     return (
         <Container centerContent maxW="container.xl">
             <Heading>Grade Calculators</Heading>
-            <Tabs isFitted marginTop="1">
+            <Tabs isFitted marginTop="3" colorScheme="special">
                 <TabList>
                     <Tab>Weighted</Tab>
                     <Tab>Assignment Based</Tab>

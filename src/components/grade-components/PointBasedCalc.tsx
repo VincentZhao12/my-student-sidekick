@@ -1,11 +1,12 @@
 import { Button, IconButton } from '@chakra-ui/button';
-import { AddIcon } from '@chakra-ui/icons';
+import { AddIcon, DeleteIcon } from '@chakra-ui/icons';
 import { Container, Text } from '@chakra-ui/layout';
 import { Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/table';
 import { Tooltip } from '@chakra-ui/tooltip';
 import React, { FC, useEffect, useState } from 'react';
 import Card from '../Card';
 import NumberInputWrapper from '../NumberInputWrapper';
+import Instructions from './Instructions';
 
 export interface PointBasedCalcProps {}
 
@@ -36,6 +37,15 @@ const PointBasedCalc: FC<PointBasedCalcProps> = () => {
                     <Tr>
                         <Th>Points Scored</Th>
                         <Th>Possible Points</Th>
+                        <Th>
+                            <Instructions title="How do I use this?">
+                                Calculate your grade for a class with an
+                                assignment based gradebook. Enter the amount of
+                                points you have scored on each assignment and
+                                the amount of points possible for that
+                                assignment
+                            </Instructions>
+                        </Th>
                     </Tr>
                 </Thead>
                 <Tbody>
@@ -47,6 +57,11 @@ const PointBasedCalc: FC<PointBasedCalcProps> = () => {
                                 changed[index] = assignment;
                                 setAssignments(changed);
                             }}
+                            onRemove={() => {
+                                let removed = [...assignments];
+                                removed.splice(index, 1);
+                                setAssignments(removed);
+                            }}
                         />
                     ))}
                 </Tbody>
@@ -56,7 +71,8 @@ const PointBasedCalc: FC<PointBasedCalcProps> = () => {
                     icon={<AddIcon />}
                     aria-label="Add Assignment"
                     width="inherit"
-                    colorScheme="blue"
+                    colorScheme="secondary"
+                    variant="outline"
                     onClick={() =>
                         setAssignments([
                             ...assignments,
@@ -68,7 +84,7 @@ const PointBasedCalc: FC<PointBasedCalcProps> = () => {
 
             <Button
                 marginTop="3"
-                colorScheme="green"
+                colorScheme="primary"
                 width="inherit"
                 onClick={calculateGrade}
             >
@@ -95,9 +111,10 @@ interface Assignment {
 
 interface AssignmentInputProps {
     onChange?: (assignment: Assignment) => void;
+    onRemove?: () => any;
 }
 
-const AssignmentInput: FC<AssignmentInputProps> = ({ onChange }) => {
+const AssignmentInput: FC<AssignmentInputProps> = ({ onChange, onRemove }) => {
     const [assignment, setAssignment] = useState<Assignment>();
 
     useEffect(() => {
@@ -129,6 +146,16 @@ const AssignmentInput: FC<AssignmentInputProps> = ({ onChange }) => {
                             : setAssignment({ possiblePoints: num, points: 0 })
                     }
                 />
+            </Td>
+            <Td>
+                <Tooltip label="Remove Category">
+                    <IconButton
+                        aria-label="Remove category"
+                        icon={<DeleteIcon />}
+                        colorScheme="danger"
+                        onClick={onRemove}
+                    />
+                </Tooltip>
             </Td>
         </Tr>
     );
