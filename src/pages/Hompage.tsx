@@ -1,6 +1,5 @@
 import {
     Box,
-    Button,
     Container,
     Flex,
     Heading,
@@ -42,13 +41,13 @@ const Homepage: FC<HomepageProps> = () => {
                     on this website. This website is currently in development so
                     any feedback and suggestions would be very appreciated.
                     Email feedback and suggestions to{' '}
-                    <Text as={'span'} color="secondary.300">
+                    <Text as={'span'} color="primary.300">
                         mystudentsidekick@gmail.com
                     </Text>{' '}
                     or make an issue on{' '}
                     <Text
                         as={'a'}
-                        color="secondary.300"
+                        color="primary.300"
                         textDecoration="underline"
                         href="https://github.com/VincentZhao12/my-student-sidekick"
                         target="_blank"
