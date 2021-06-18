@@ -76,7 +76,6 @@ const Notes: FC<NotesProps> = () => {
                     console.log(notes);
                     let newNotes = [...notes];
                     newNotes.splice(index, 1);
-                    setNotes(newNotes);
                 }
             } else {
                 localStorage.removeItem(`notes/${notes[index].id}`);
@@ -86,10 +85,10 @@ const Notes: FC<NotesProps> = () => {
                     'notes',
                     JSON.stringify(newNotes.map((note) => note.id)),
                 );
-                setDummy(dummy * -1);
+                setNotes(newNotes);
             }
 
-            setSelectedNote(index - 1);
+            setSelectedNote(Math.max(index - 1, 0));
         }
     };
 

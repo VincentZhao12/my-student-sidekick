@@ -26,6 +26,7 @@ const NotesDisplay: FC<NotesDisplayProps> = ({
             bg={'gray.700'}
             padding="2"
             borderRadius="lg"
+            width="xs"
         >
             <VStack>
                 {noteTitles.map((note, index) => (
