@@ -3,7 +3,6 @@ import { BrowserRouter, Switch } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Routes from './components/Routes';
 import Providers from './components/Providers';
-import Footer from './components/Footer';
 const App: FC = () => {
     return (
         <div className="App">
@@ -15,7 +14,6 @@ const App: FC = () => {
                             <Routes />
                         </Switch>
                     </div>
-                    <Footer />
                 </BrowserRouter>
             </Providers>
         </div>
