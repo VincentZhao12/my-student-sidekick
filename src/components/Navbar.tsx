@@ -12,6 +12,7 @@ import {
     MenuButton,
     MenuList,
     MenuItem,
+    Icon,
 } from '@chakra-ui/react';
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
 import { Link } from 'react-router-dom';
@@ -79,7 +80,9 @@ const Navbar: FC = () => {
                 />
                 <HStack spacing={8} alignItems={'center'}>
                     <Box fontSize="xl" as={Link} to="/">
-                        <Logo />
+                        <Icon viewBox="0 0 600 600" fill="white" boxSize={10}>
+                            <Logo />
+                        </Icon>
                         My Student Sidekick
                     </Box>
                     <HStack
