@@ -34,9 +34,11 @@ const linksData: LinkData[] = [
 export const NavLink = ({
     children,
     to,
+    onClick,
 }: {
     children: ReactNode;
     to?: string;
+    onClick?: () => any;
 }) => (
     <StyledLink
         px={2}
@@ -48,15 +50,16 @@ export const NavLink = ({
         }}
         as={Link}
         to={to || ''}
+        onClick={onClick}
     >
         {children}
     </StyledLink>
 );
 
-const Links: FC = () => (
+const Links = ({ onClose }: { onClose?: () => any }) => (
     <>
         {linksData.map((link) => (
-            <NavLink to={link.to} key={link.to}>
+            <NavLink to={link.to} key={link.to} onClick={onClose}>
                 {link.text}
             </NavLink>
         ))}
@@ -120,11 +123,15 @@ const Navbar: FC = () => {
             {isOpen ? (
                 <Box pb={4}>
                     <Stack as={'nav'} spacing={4}>
-                        <Links />
+                        <Links onClose={onClose} />
                         {!loggedIn && (
                             <>
-                                <NavLink to="/login">Log In</NavLink>
-                                <NavLink to="/signup">Sign Up</NavLink>
+                                <NavLink to="/login" onClick={onClose}>
+                                    Log In
+                                </NavLink>
+                                <NavLink to="/signup" onClick={onClose}>
+                                    Sign Up
+                                </NavLink>
                             </>
                         )}
                     </Stack>
