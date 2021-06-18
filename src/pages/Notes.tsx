@@ -70,10 +70,10 @@ const Notes: FC<NotesProps> = () => {
                     db.collection('users')
                         .doc(currentUser.uid)
                         .collection('notes')
-                        .doc(notes[index].id)
+                        .doc(`${notes[index].id}`)
                         .delete();
                 } catch (e) {
-                    console.log(notes);
+                    console.log(e);
                     let newNotes = [...notes];
                     newNotes.splice(index, 1);
                 }
