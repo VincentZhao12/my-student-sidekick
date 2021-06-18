@@ -1,6 +1,7 @@
 import { Button } from '@chakra-ui/button';
 import { Input } from '@chakra-ui/input';
 import { Flex } from '@chakra-ui/layout';
+import { HStack } from '@chakra-ui/react';
 import React, { FC, useState } from 'react';
 import { useHistory } from 'react-router';
 import { useBibliography } from '../../contexts/BibliographyContext';
@@ -103,17 +104,17 @@ const SearchWebsite: FC<SearchWebsiteProps> = ({ marginTop }) => {
     };
 
     return (
-        <Flex width={'md'} marginTop={marginTop}>
+        <HStack width={'md'} marginTop={marginTop}>
             <Input onChange={(e) => setUrl(e.target.value)} placeholder="URL" />
             <Button
-                colorScheme="green"
+                colorScheme="special"
                 onClick={handleSubmit}
                 disabled={loading}
                 isLoading={loading}
             >
                 Cite
             </Button>
-        </Flex>
+        </HStack>
     );
 };
 

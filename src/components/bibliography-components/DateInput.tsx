@@ -1,4 +1,4 @@
-import { Flex, Select } from '@chakra-ui/react';
+import { HStack, Select } from '@chakra-ui/react';
 import React, { FC, useEffect, useState } from 'react';
 import { DateFormat } from '../../utils/BibliographyUtils';
 import NumberInputWrapper from '../NumberInputWrapper';
@@ -20,7 +20,7 @@ const DateInput: FC<DateInputProps> = ({ onChange, defaultValue }) => {
     }, [defaultValue]);
 
     return (
-        <Flex>
+        <HStack>
             <Select
                 value={month}
                 onChange={(e) => {
@@ -72,7 +72,7 @@ const DateInput: FC<DateInputProps> = ({ onChange, defaultValue }) => {
                 placeholder={'Year'}
                 value={year}
             />
-        </Flex>
+        </HStack>
     );
 };
 

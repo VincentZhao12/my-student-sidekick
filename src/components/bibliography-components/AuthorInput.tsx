@@ -1,5 +1,5 @@
 import { DeleteIcon } from '@chakra-ui/icons';
-import { Flex, IconButton, Input, Tooltip } from '@chakra-ui/react';
+import { HStack, IconButton, Input, Tooltip } from '@chakra-ui/react';
 import React, { FC, useState } from 'react';
 import { Name } from '../../utils/BibliographyUtils';
 
@@ -19,7 +19,7 @@ const AuthorInput: FC<AuthorInputProps> = ({
     const [last, setLast] = useState(defaultValue?.last);
 
     return (
-        <Flex>
+        <HStack>
             <Input
                 onChange={(e) => {
                     setFirst(e.target.value);
@@ -63,11 +63,11 @@ const AuthorInput: FC<AuthorInputProps> = ({
                 <IconButton
                     aria-label="Delete Author"
                     icon={<DeleteIcon />}
-                    colorScheme="red"
+                    colorScheme="danger"
                     onClick={onDelete}
                 />
             </Tooltip>
-        </Flex>
+        </HStack>
     );
 };
 

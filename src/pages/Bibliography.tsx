@@ -35,7 +35,7 @@ const Bibliography: FC<BibliographyProps> = () => {
         <Container centerContent>
             <Heading>Bibliography</Heading>
             {citations.length === 0 ? (
-                <Alert statur="info">
+                <Alert statur="info" marginTop="3">
                     <AlertIcon />
                     To add a citation to your bibliography, press the "Cite a
                     Website" button below
@@ -68,13 +68,13 @@ const Bibliography: FC<BibliographyProps> = () => {
                 <Button
                     as={Link}
                     to="/create-bibliography/cite-website"
-                    colorScheme="green"
+                    colorScheme="secondary"
                 >
                     Cite a Website
                 </Button>
                 <Button
                     onClick={copyCitations}
-                    colorScheme="blue"
+                    colorScheme="primary"
                     disabled={!citations || !citations.length}
                 >
                     Copy All Citations
@@ -118,7 +118,7 @@ const CitationText: FC<CitationTextProps> = ({ index, children }) => {
                             icon={<CopyIcon />}
                             aria-label="Copy Citation"
                             onClick={handleCopyCitation}
-                            colorScheme="blue"
+                            colorScheme="primary"
                         />
                     </Tooltip>
                     <Tooltip label="Edit Citation">
@@ -130,7 +130,7 @@ const CitationText: FC<CitationTextProps> = ({ index, children }) => {
                                     `/create-bibliography/cite-website/manual-citation/edit${index}`,
                                 )
                             }
-                            colorScheme="yellow"
+                            colorScheme="warning"
                         />
                     </Tooltip>
                     <Tooltip label="Delete Citation">
@@ -138,7 +138,7 @@ const CitationText: FC<CitationTextProps> = ({ index, children }) => {
                             icon={<DeleteIcon />}
                             aria-label="Delete Citation"
                             onClick={() => deleteCitation(index)}
-                            colorScheme="red"
+                            colorScheme="danger"
                         />
                     </Tooltip>
                 </VStack>
