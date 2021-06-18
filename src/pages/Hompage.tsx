@@ -142,7 +142,7 @@ const SimpleThreeColumns = () => {
                     icon={
                         <Icon as={GoMarkGithub} w={10} h={10} color="black" />
                     }
-                    title={'Check out the Github'}
+                    title={'Check out the code'}
                     text={
                         'If you want to check out the code, create an issue, or make a pull request, you can check out the Github repository for this project'
                     }

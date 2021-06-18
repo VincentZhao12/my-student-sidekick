@@ -22,7 +22,7 @@ const Bibliography: FC<BibliographyProps> = () => {
             e.clipboardData?.setData('text/html', ref.current?.innerHTML || '');
             e.clipboardData?.setData(
                 'text/plain',
-                ref.current?.innerHTML || '',
+                ref.current?.innerText || '',
             );
             e.preventDefault();
         };
@@ -99,7 +99,7 @@ const CitationText: FC<CitationTextProps> = ({ index, children }) => {
             e.clipboardData?.setData('text/html', ref.current?.innerHTML || '');
             e.clipboardData?.setData(
                 'text/plain',
-                ref.current?.innerHTML || '',
+                ref.current?.innerText || '',
             );
             e.preventDefault();
         };

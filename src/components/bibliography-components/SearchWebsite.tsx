@@ -103,7 +103,14 @@ const SearchWebsite: FC<SearchWebsiteProps> = ({ marginTop }) => {
     };
 
     return (
-        <HStack width={'md'} marginTop={marginTop}>
+        <HStack
+            width={{
+                base: 'xs',
+                md: 'sm',
+                lg: 'md',
+            }}
+            marginTop={marginTop}
+        >
             <Input onChange={(e) => setUrl(e.target.value)} placeholder="URL" />
             <Button
                 colorScheme="special"

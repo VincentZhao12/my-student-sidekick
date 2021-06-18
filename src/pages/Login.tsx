@@ -15,6 +15,7 @@ import {
     AlertIcon,
     AlertTitle,
     CloseButton,
+    Container,
 } from '@chakra-ui/react';
 import React, { FC, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
@@ -67,9 +68,11 @@ const Login: FC<LoginProps> = () => {
                     </Alert>
                 </Stack>
             )}
-            <Stack align={'center'} marginBottom={'3'}>
-                <Heading fontSize={'4xl'}>Sign in to your account</Heading>
-            </Stack>
+            <Container centerContent>
+                <Heading fontSize={'4xl'} textAlign="center">
+                    Sign in to your account
+                </Heading>
+            </Container>
             <Stack align={'center'}>
                 <Box
                     rounded={'lg'}
@@ -97,11 +100,7 @@ const Login: FC<LoginProps> = () => {
                         </FormControl>
                         <Stack spacing={10}>
                             <Button
-                                bg={'blue.400'}
-                                color={'white'}
-                                _hover={{
-                                    bg: 'blue.500',
-                                }}
+                                colorScheme="primary"
                                 onClick={handleSubmit}
                             >
                                 Sign in
@@ -111,7 +110,7 @@ const Login: FC<LoginProps> = () => {
                             <Text>
                                 Don't have an account?{' '}
                                 <StyledLink
-                                    color="cyan.400"
+                                    color="special.300"
                                     as={Link}
                                     to="/signup"
                                 >

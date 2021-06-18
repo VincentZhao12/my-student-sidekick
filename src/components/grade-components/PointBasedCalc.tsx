@@ -31,10 +31,16 @@ const PointBasedCalc: FC<PointBasedCalcProps> = () => {
     };
 
     return (
-        <Container centerContent>
+        <Container centerContent width="inherit">
             <Table>
                 <Thead>
-                    <Tr>
+                    <Tr
+                        width={{
+                            base: 'xs',
+                            md: 'sm',
+                            lg: 'md',
+                        }}
+                    >
                         <Th>Points Scored</Th>
                         <Th>Possible Points</Th>
                         <Th>
@@ -70,7 +76,11 @@ const PointBasedCalc: FC<PointBasedCalcProps> = () => {
                 <IconButton
                     icon={<AddIcon />}
                     aria-label="Add Assignment"
-                    width="inherit"
+                    width={{
+                        base: 'xs',
+                        md: 'sm',
+                        lg: 'md',
+                    }}
                     colorScheme="secondary"
                     variant="outline"
                     onClick={() =>
@@ -85,7 +95,11 @@ const PointBasedCalc: FC<PointBasedCalcProps> = () => {
             <Button
                 marginTop="3"
                 colorScheme="primary"
-                width="inherit"
+                width={{
+                    base: 'xs',
+                    md: 'sm',
+                    lg: 'md',
+                }}
                 onClick={calculateGrade}
             >
                 Calculate
@@ -125,7 +139,13 @@ const AssignmentInput: FC<AssignmentInputProps> = ({ onChange, onRemove }) => {
     }, [assignment, onChange]);
 
     return (
-        <Tr>
+        <Tr
+            width={{
+                base: 'xs',
+                md: 'sm',
+                lg: 'md',
+            }}
+        >
             <Td>
                 <NumberInputWrapper
                     onChange={(num) =>

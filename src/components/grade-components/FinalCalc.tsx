@@ -23,7 +23,13 @@ const FinalCalc: FC<FinalCalcProps> = () => {
     };
 
     return (
-        <Container>
+        <Container
+            width={{
+                base: 'xs',
+                md: 'sm',
+                lg: 'md',
+            }}
+        >
             <Stack>
                 <Container>
                     <Text>Your Current Grade % </Text>

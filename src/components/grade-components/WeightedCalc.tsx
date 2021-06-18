@@ -30,8 +30,8 @@ const WeightedCalc: FC<WeightedCalcProps> = () => {
     };
 
     return (
-        <Container centerContent>
-            <Table>
+        <Container centerContent width="inherit">
+            <Table width="inherit">
                 <Thead>
                     <Tr>
                         <Th>Grade %</Th>
@@ -67,7 +67,11 @@ const WeightedCalc: FC<WeightedCalcProps> = () => {
                 <IconButton
                     icon={<AddIcon />}
                     aria-label="Add Category"
-                    width="inherit"
+                    width={{
+                        base: 'xs',
+                        md: 'sm',
+                        lg: 'md',
+                    }}
                     colorScheme="secondary"
                     variant="outline"
                     onClick={() =>
@@ -79,7 +83,11 @@ const WeightedCalc: FC<WeightedCalcProps> = () => {
             <Button
                 marginTop="3"
                 colorScheme="primary"
-                width="inherit"
+                width={{
+                    base: 'xs',
+                    md: 'sm',
+                    lg: 'md',
+                }}
                 onClick={calculateGrade}
             >
                 Calculate
