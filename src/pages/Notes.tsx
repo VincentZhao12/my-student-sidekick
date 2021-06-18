@@ -25,12 +25,22 @@ const Notes: FC<NotesProps> = () => {
 
     useEffect(() => {
         if (!loggedIn) {
-            const notes = JSON.parse(localStorage.getItem('notes') || '[]');
-            setNotes(
-                notes.map((note: any) =>
-                    JSON.parse(localStorage.getItem(`notes/${note}`) || ''),
-                ),
-            );
+            let notes = JSON.parse(localStorage.getItem('notes') || '[]');
+
+            let newNotes: any[] = [];
+
+            let data = notes.map((note: any) => {
+                const val = localStorage.getItem(`notes/${note}`);
+                if (val !== null) {
+                    newNotes.push(note);
+                    return JSON.parse(val);
+                } else return undefined;
+            });
+
+            data = [...data].filter((data) => data !== undefined);
+            localStorage.setItem('notes', JSON.stringify(newNotes));
+
+            setNotes(data);
         } else if (currentUser) {
             db.collection('users')
                 .doc(currentUser.uid)
@@ -51,6 +61,36 @@ const Notes: FC<NotesProps> = () => {
             },
         ]);
         setSelectedNote(notes.length);
+    };
+
+    const deleteNote = (index: number) => {
+        if (index < notes.length) {
+            if (currentUser) {
+                try {
+                    db.collection('users')
+                        .doc(currentUser.uid)
+                        .collection('notes')
+                        .doc(notes[index].id)
+                        .delete();
+                } catch (e) {
+                    console.log(notes);
+                    let newNotes = [...notes];
+                    newNotes.splice(index, 1);
+                    setNotes(newNotes);
+                }
+            } else {
+                localStorage.removeItem(`notes/${notes[index].id}`);
+                let newNotes = [...notes];
+                newNotes.splice(index, 1);
+                localStorage.setItem(
+                    'notes',
+                    JSON.stringify(newNotes.map((note) => note.id)),
+                );
+                setDummy(dummy * -1);
+            }
+
+            setSelectedNote(index - 1);
+        }
     };
 
     return (
@@ -92,8 +132,14 @@ const Notes: FC<NotesProps> = () => {
                     noteTitles={notes.map((note) => note.title)}
                     selectedIndex={selectedNote}
                     onIndexChange={setSelectedNote}
+                    onDelete={deleteNote}
                 />
-                <Button width="3xs" onClick={createNewNote}>
+                <Button
+                    width="2xs"
+                    onClick={createNewNote}
+                    colorScheme="secondary"
+                    variant="outline"
+                >
                     <AddIcon marginRight={'1.5'} /> Create New Note
                 </Button>
             </VStack>

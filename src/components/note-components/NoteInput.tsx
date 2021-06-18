@@ -17,9 +17,8 @@ export interface NoteInputProps {
 
 const NoteInput: FC<NoteInputProps> = ({ noteId, onSave, defaultData }) => {
     const [title, setTitle] = useState<string>('');
-    const [rawEditorData, setRawEditorData] = useState<
-        RawDraftContentState | any
-    >();
+    const [rawEditorData, setRawEditorData] =
+        useState<RawDraftContentState | any>();
     const [saved, setSaved] = useState<boolean>(true);
     const { loggedIn, currentUser } = useAuth();
     const [defaultValue, setDefaultValue] = useState();
@@ -100,6 +99,7 @@ const NoteInput: FC<NoteInputProps> = ({ noteId, onSave, defaultData }) => {
                     handleSave();
                 }}
                 width="inherit"
+                colorScheme="primary"
             >
                 Save
             </Button>
