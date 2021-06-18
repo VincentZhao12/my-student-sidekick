@@ -1,6 +1,5 @@
 import { Button } from '@chakra-ui/button';
 import { Input } from '@chakra-ui/input';
-import { Flex } from '@chakra-ui/layout';
 import { HStack } from '@chakra-ui/react';
 import React, { FC, useState } from 'react';
 import { useHistory } from 'react-router';

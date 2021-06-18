@@ -1,5 +1,5 @@
 import { Container, Spacer, Stack, Text } from '@chakra-ui/layout';
-import { Button, Flex, HStack } from '@chakra-ui/react';
+import { Button, HStack } from '@chakra-ui/react';
 import React, { FC, useState } from 'react';
 import NumberInputWrapper from '../NumberInputWrapper';
 import Instructions from './Instructions';
