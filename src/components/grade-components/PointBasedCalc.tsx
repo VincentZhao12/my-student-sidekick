@@ -32,15 +32,9 @@ const PointBasedCalc: FC<PointBasedCalcProps> = () => {
 
     return (
         <Container centerContent width="inherit">
-            <Table>
+            <Table width="inherit">
                 <Thead>
-                    <Tr
-                        width={{
-                            base: 'xs',
-                            md: 'sm',
-                            lg: 'md',
-                        }}
-                    >
+                    <Tr>
                         <Th>Points Scored</Th>
                         <Th>Possible Points</Th>
                         <Th>
