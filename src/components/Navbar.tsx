@@ -29,6 +29,7 @@ const linksData: LinkData[] = [
     { text: 'Grade Calculator', to: '/grade-calculator' },
     { text: 'Create Bibliography', to: '/create-bibliography' },
     { text: 'Notes', to: '/notes' },
+    { text: 'Schedule', to: '/schedule' },
 ];
 
 export const NavLink = ({

@@ -5,6 +5,7 @@ import GradeCalculator from '../pages/GradeCalculator';
 import Homepage from '../pages/Hompage';
 import Login from '../pages/Login';
 import Notes from '../pages/Notes';
+import Schedule from '../pages/Schedule';
 import Signup from '../pages/Signup';
 import CiteWebsite from './bibliography-components/CiteWebsite';
 import ManualCitation from './bibliography-components/ManualCitation';
@@ -35,6 +36,7 @@ const Routes: FC<RoutesProps> = () => {
                 path="/create-bibliography/cite-website/manual-citation/edit:index"
                 component={ManualCitation}
             />
+            <Route exact path="/schedule" component={Schedule} />
         </>
     );
 };

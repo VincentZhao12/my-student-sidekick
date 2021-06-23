@@ -1,4 +1,4 @@
-import { BackgroundProps, Box, LayoutProps } from '@chakra-ui/react';
+import { BackgroundProps, Box, BoxProps, LayoutProps } from '@chakra-ui/react';
 import React, { FC } from 'react';
 
 export interface CardProps {
@@ -7,7 +7,7 @@ export interface CardProps {
     padding?: number;
 }
 
-const Card: FC<CardProps> = ({
+const Card: FC<CardProps | BoxProps> = ({
     children,
     maxWidth,
     backgroundColor,
