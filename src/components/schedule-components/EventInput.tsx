@@ -1,4 +1,13 @@
-import { Stack, Button, FormControl, Input, FormLabel } from '@chakra-ui/react';
+import {
+    Stack,
+    Button,
+    FormControl,
+    Input,
+    FormLabel,
+    HStack,
+    IconButton,
+    Tooltip,
+} from '@chakra-ui/react';
 import React, { FC, useState } from 'react';
 import { useEffect } from 'react';
 import ReactDatePicker from 'react-datepicker';
@@ -6,6 +15,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import { db } from '../../firebase';
 import 'react-datepicker/dist/react-datepicker.css';
 import './EventInput.css';
+import { DeleteIcon } from '@chakra-ui/icons';
 
 interface EventInputProps {
     defaultStart?: Date;
@@ -75,6 +85,20 @@ const EventInput: FC<EventInputProps> = ({
         }
     };
 
+    const handleDelete = () => {
+        if (eventId) {
+            db.collection('users')
+                .doc(currentUser?.uid)
+                .collection('events')
+                .doc(eventId)
+                .delete()
+                .then(onSubmit)
+                .catch((e) => console.log(e));
+        } else {
+            onSubmit && onSubmit();
+        }
+    };
+
     return (
         <Stack spacing={4}>
             <FormControl>
@@ -106,9 +130,19 @@ const EventInput: FC<EventInputProps> = ({
                     dateFormat="Pp"
                 />
             </FormControl>
-            <Button width="inherit" onClick={createEvent}>
-                {eventId ? 'Edit' : 'Create'} Event
-            </Button>
+            <HStack width="inherit">
+                <Button width="lg" onClick={createEvent} colorScheme="primary">
+                    {eventId ? 'Edit' : 'Create'} Event
+                </Button>
+                <Tooltip label="Delete Event">
+                    <IconButton
+                        aria-label="Delete Event"
+                        icon={<DeleteIcon />}
+                        colorScheme="danger"
+                        onClick={handleDelete}
+                    />
+                </Tooltip>
+            </HStack>
         </Stack>
     );
 };
