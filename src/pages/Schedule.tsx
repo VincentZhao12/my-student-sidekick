@@ -1,4 +1,5 @@
 import {
+    Button,
     Container,
     Popover,
     PopoverArrow,
@@ -8,22 +9,31 @@ import {
     PopoverHeader,
     useDisclosure,
 } from '@chakra-ui/react';
-import moment from 'moment';
+import FullCalendar, {
+    DateSelectArg,
+    EventClickArg,
+} from '@fullcalendar/react';
 import React, { FC } from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
-import { Calendar, Event, momentLocalizer } from 'react-big-calendar';
 import EventInput from '../components/schedule-components/EventInput';
 import { useAuth } from '../contexts/AuthContext';
 import { db } from '../firebase';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import timeGridPlugin from '@fullcalendar/timegrid';
+import interactionPlugin from '@fullcalendar/interaction';
 
-import 'react-big-calendar/lib/css/react-big-calendar.css';
 import './Schedule.css';
 import NeedAccount from './NeedAccount';
 
-interface ScheduleProps {}
+interface Event {
+    title: string;
+    start: Date;
+    end: Date;
+    id?: string;
+}
 
-const localizer = momentLocalizer(moment);
+interface ScheduleProps {}
 
 const Schedule: FC<ScheduleProps> = () => {
     const [events, setEvents] = useState<Event[]>([]);
@@ -54,27 +64,59 @@ const Schedule: FC<ScheduleProps> = () => {
         }
     }, [currentUser]);
 
+    const handleSelect = (selection: DateSelectArg) => {
+        setStart(selection.start);
+        setEnd(selection.end);
+        setSelectedEvent('');
+
+        onOpen();
+    };
+
+    const handleEventSelect = (event: EventClickArg) => {
+        setSelectedEvent(event.event.id);
+        onOpen();
+    };
+
     if (!currentUser) return <NeedAccount />;
     return (
-        <Container centerContent width="container.xl">
-            <Calendar
-                localizer={localizer}
-                events={events}
-                startAccessor="start"
-                endAccessor="end"
-                onSelectSlot={(s) => {
-                    if (typeof s.start !== 'string') setStart(s.start);
-                    if (typeof s.end !== 'string') setEnd(s.end);
-                    onOpen();
+        <Container centerContent>
+            <div
+                style={{
+                    height: '90vh',
+                    width: '90vw',
                 }}
-                selectable
-                onSelectEvent={(e: any) => {
-                    onOpen();
-                    setSelectedEvent(e.id);
-                }}
-            />
+            >
+                <FullCalendar
+                    plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+                    headerToolbar={{
+                        left: 'prev,next today',
+                        center: 'title',
+                        right: 'dayGridMonth,timeGridWeek,timeGridDay',
+                    }}
+                    initialView="dayGridMonth"
+                    events={events}
+                    editable={true}
+                    selectable={true}
+                    selectMirror={true}
+                    buttonText={{
+                        today: 'Today',
+                        month: 'Month',
+                        week: 'Week',
+                        day: 'Day',
+                    }}
+                    select={handleSelect}
+                    eventClick={handleEventSelect}
+                />
+            </div>
+
             <Popover isOpen={isOpen} onClose={onClose}>
-                <PopoverContent width="lg">
+                <PopoverContent
+                    width={{
+                        base: 'xs',
+                        md: 'sm',
+                        lg: 'md',
+                    }}
+                >
                     <PopoverArrow />
                     <PopoverCloseButton />
                     <PopoverHeader>Event</PopoverHeader>
@@ -88,6 +130,23 @@ const Schedule: FC<ScheduleProps> = () => {
                     </PopoverBody>
                 </PopoverContent>
             </Popover>
+            <Button
+                width="inherit"
+                onClick={() => {
+                    setSelectedEvent('');
+                    setStart(new Date(Date.now()));
+                    setEnd(new Date(Date.now() + 1000 * 60 * 60));
+                    onOpen();
+                }}
+                marginTop="10"
+                colorScheme="secondary"
+                variant="outline"
+                marginBottom="10"
+                fontSize="xl"
+                height="24"
+            >
+                Create Event
+            </Button>
         </Container>
     );
 };

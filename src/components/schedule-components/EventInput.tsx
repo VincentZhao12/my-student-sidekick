@@ -20,7 +20,7 @@ const EventInput: FC<EventInputProps> = ({
     eventId,
     onSubmit,
 }) => {
-    const [title, setTitle] = useState<string | undefined>();
+    const [title, setTitle] = useState<string | undefined>('');
     const [start, setStart] = useState<Date | undefined>();
     const [end, setEnd] = useState<Date | undefined>();
     const { currentUser } = useAuth();
@@ -42,6 +42,7 @@ const EventInput: FC<EventInputProps> = ({
         } else {
             setStart(defaultStart);
             setEnd(defaultEnd);
+            setTitle('');
         }
     }, [eventId, currentUser, defaultStart, defaultEnd]);
 
@@ -79,7 +80,7 @@ const EventInput: FC<EventInputProps> = ({
             <FormControl>
                 <FormLabel>Event Title</FormLabel>
                 <Input
-                    defaultValue={title}
+                    value={title}
                     onChange={(e) => setTitle(e.target.value)}
                 />
             </FormControl>
