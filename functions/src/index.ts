@@ -92,11 +92,7 @@ exports.fetchWebsiteInfo = functions.https.onCall(async (data, context) => {
                 dom.window.document
                     .querySelector('time')
                     ?.getAttribute('datetime') || '';
-
-        console.log(foundData);
-    } catch (error) {
-        console.log(error);
-    }
+    } catch (error) {}
     return foundData;
 });
 
@@ -131,7 +127,6 @@ const checkNotifications = async (
         eventsSnapshot.docs.forEach((doc) => {
             const data = doc.data();
             if (!data.notified) {
-                functions.logger.log(`sending message for ${data.title}`);
                 sendMessages(
                     notificationTokens,
                     data.title,
