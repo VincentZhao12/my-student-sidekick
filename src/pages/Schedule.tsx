@@ -18,7 +18,7 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import EventInput from '../components/schedule-components/EventInput';
 import { useAuth } from '../contexts/AuthContext';
-import { db } from '../firebase';
+import { db, messaging } from '../firebase';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
@@ -45,6 +45,33 @@ const Schedule: FC<ScheduleProps> = () => {
 
     useEffect(() => {
         if (currentUser) {
+            const setUpNotifications = async () => {
+                try {
+                    const [token, userDoc] = await Promise.all([
+                        messaging.getToken(),
+                        db.collection('users').doc(currentUser.uid).get(),
+                    ]);
+
+                    const tokens = userDoc.data()?.notificationTokens;
+
+                    if (!tokens)
+                        db.collection('users')
+                            .doc(currentUser.uid)
+                            .update({
+                                notificationTokens: [token],
+                            });
+                    else if (tokens.indexOf(token) === -1) {
+                        db.collection('users')
+                            .doc(currentUser.uid)
+                            .update({
+                                notificationTokens: [token],
+                            });
+                    }
+                } catch (error) {
+                    console.log(error);
+                }
+            };
+            setUpNotifications();
             db.collection('users')
                 .doc(currentUser.uid)
                 .collection('events')

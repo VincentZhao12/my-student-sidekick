@@ -1,6 +1,11 @@
 import * as functions from 'firebase-functions';
+import * as admin from 'firebase-admin';
 import fetch from 'node-fetch';
 import { JSDOM } from 'jsdom';
+
+admin.initializeApp();
+const db = admin.firestore();
+const messaging = admin.messaging();
 // // Start writing Firebase Functions
 // // https://firebase.google.com/docs/functions/typescript
 //
@@ -94,3 +99,60 @@ exports.fetchWebsiteInfo = functions.https.onCall(async (data, context) => {
     }
     return foundData;
 });
+
+exports.periodic = functions.pubsub.schedule('* * * * *').onRun((context) => {
+    const timestamp = context.timestamp;
+
+    db.collection('users')
+        .get()
+        .then((snapshot) => {
+            snapshot.docs.forEach((doc) => {
+                const data = doc.data();
+                checkNotifications(timestamp, data.id, data.notificationTokens);
+            });
+        });
+
+    return null;
+});
+
+const checkNotifications = async (
+    time: string,
+    user: string,
+    notificationTokens: string[],
+) => {
+    try {
+        const eventsSnapshot = await db
+            .collection('users')
+            .doc(user)
+            .collection('events')
+            .where('start', '<=', admin.firestore.Timestamp.now())
+            .get();
+
+        eventsSnapshot.docs.forEach((doc) => {
+            const data = doc.data();
+            if (!data.notified) {
+                functions.logger.log(`sending message for ${data.title}`);
+                sendMessages(
+                    notificationTokens,
+                    data.title,
+                    `Your event, ${data.title}, starts now!`,
+                );
+                doc.ref.update({ notified: true });
+            }
+        });
+    } catch (e) {
+        functions.logger.warn(e);
+    }
+};
+
+const sendMessages = (tokens: string[], title: string, desc: string) => {
+    messaging.sendAll(
+        tokens.map((token) => ({
+            token,
+            notification: {
+                title,
+                body: desc,
+            },
+        })),
+    );
+};

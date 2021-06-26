@@ -3,6 +3,7 @@ import 'firebase/auth';
 import 'firebase/firestore';
 import 'firebase/storage';
 import 'firebase/functions';
+import 'firebase/messaging';
 
 interface FirebaseConfig {
     apiKey: string | undefined;
@@ -28,3 +29,4 @@ export default firebase;
 export const db: firebase.firestore.Firestore = firebase.firestore();
 export const auth: firebase.auth.Auth = firebase.auth();
 export const functions: firebase.functions.Functions = firebase.functions();
+export const messaging: firebase.messaging.Messaging = firebase.messaging();
