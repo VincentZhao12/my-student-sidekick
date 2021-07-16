@@ -3,7 +3,7 @@ import { AddIcon, DeleteIcon } from '@chakra-ui/icons';
 import { Container, Text } from '@chakra-ui/layout';
 import { Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/table';
 import { Tooltip } from '@chakra-ui/tooltip';
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, SyntheticEvent, useEffect, useState } from 'react';
 import Card from '../Card';
 import NumberInputWrapper from '../NumberInputWrapper';
 import Instructions from './Instructions';
@@ -17,7 +17,8 @@ const PointBasedCalc: FC<PointBasedCalcProps> = () => {
     const [grade, setGrade] = useState<number>(100);
     const [show, setShow] = useState<boolean>();
 
-    const calculateGrade = () => {
+    const calculateGrade = (e: SyntheticEvent) => {
+        e.preventDefault();
         let points = 0;
         let possiblePoints = 0;
         assignments.forEach((assignment) => {
@@ -32,72 +33,74 @@ const PointBasedCalc: FC<PointBasedCalcProps> = () => {
 
     return (
         <Container centerContent width="inherit">
-            <Table width="inherit">
-                <Thead>
-                    <Tr>
-                        <Th>Points Scored</Th>
-                        <Th>Possible Points</Th>
-                        <Th>
-                            <Instructions title="How do I use this?">
-                                Calculate your grade for a class with an
-                                assignment based gradebook. Enter the amount of
-                                points you have scored on each assignment and
-                                the amount of points possible for that
-                                assignment
-                            </Instructions>
-                        </Th>
-                    </Tr>
-                </Thead>
-                <Tbody>
-                    {assignments.map((assignment, index) => (
-                        <AssignmentInput
-                            key={index}
-                            onChange={(assignment) => {
-                                let changed = assignments;
-                                changed[index] = assignment;
-                                setAssignments(changed);
-                            }}
-                            onRemove={() => {
-                                let removed = [...assignments];
-                                removed.splice(index, 1);
-                                setAssignments(removed);
-                            }}
-                        />
-                    ))}
-                </Tbody>
-            </Table>
-            <Tooltip label="Add Assignment">
-                <IconButton
-                    icon={<AddIcon />}
-                    aria-label="Add Assignment"
+            <form onSubmit={calculateGrade}>
+                <Table width="inherit">
+                    <Thead>
+                        <Tr>
+                            <Th>Points Scored</Th>
+                            <Th>Possible Points</Th>
+                            <Th>
+                                <Instructions title="How do I use this?">
+                                    Calculate your grade for a class with an
+                                    assignment based gradebook. Enter the amount
+                                    of points you have scored on each assignment
+                                    and the amount of points possible for that
+                                    assignment
+                                </Instructions>
+                            </Th>
+                        </Tr>
+                    </Thead>
+                    <Tbody>
+                        {assignments.map((assignment, index) => (
+                            <AssignmentInput
+                                key={index}
+                                onChange={(assignment) => {
+                                    let changed = assignments;
+                                    changed[index] = assignment;
+                                    setAssignments(changed);
+                                }}
+                                onRemove={() => {
+                                    let removed = [...assignments];
+                                    removed.splice(index, 1);
+                                    setAssignments(removed);
+                                }}
+                            />
+                        ))}
+                    </Tbody>
+                </Table>
+                <Tooltip label="Add Assignment">
+                    <IconButton
+                        icon={<AddIcon />}
+                        aria-label="Add Assignment"
+                        width={{
+                            base: 'xs',
+                            md: 'sm',
+                            lg: 'md',
+                        }}
+                        colorScheme="secondary"
+                        variant="outline"
+                        onClick={() =>
+                            setAssignments([
+                                ...assignments,
+                                { points: 0, possiblePoints: 0 },
+                            ])
+                        }
+                    />
+                </Tooltip>
+
+                <Button
+                    marginTop="3"
+                    colorScheme="primary"
                     width={{
                         base: 'xs',
                         md: 'sm',
                         lg: 'md',
                     }}
-                    colorScheme="secondary"
-                    variant="outline"
-                    onClick={() =>
-                        setAssignments([
-                            ...assignments,
-                            { points: 0, possiblePoints: 0 },
-                        ])
-                    }
-                />
-            </Tooltip>
-
-            <Button
-                marginTop="3"
-                colorScheme="primary"
-                width={{
-                    base: 'xs',
-                    md: 'sm',
-                    lg: 'md',
-                }}
-                onClick={calculateGrade}
-            >
-                Calculate
-            </Button>
+                    type={'submit'}
+                >
+                    Calculate
+                </Button>
+            </form>
 
             {show && (
                 <div style={{ marginTop: '3vh' }}>
@@ -147,6 +150,7 @@ const AssignmentInput: FC<AssignmentInputProps> = ({ onChange, onRemove }) => {
                             ? setAssignment({ ...assignment, points: num })
                             : setAssignment({ points: num, possiblePoints: 0 })
                     }
+                    required
                 />
             </Td>
             <Td>
@@ -159,6 +163,7 @@ const AssignmentInput: FC<AssignmentInputProps> = ({ onChange, onRemove }) => {
                               })
                             : setAssignment({ possiblePoints: num, points: 0 })
                     }
+                    required
                 />
             </Td>
             <Td>

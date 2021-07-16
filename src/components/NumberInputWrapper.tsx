@@ -16,6 +16,7 @@ export interface NumberInputWrapperProps {
     value?: number;
     max?: number;
     min?: number;
+    required?: boolean;
 }
 
 const NumberInputWrapper: FC<NumberInputWrapperProps> = ({
@@ -26,6 +27,7 @@ const NumberInputWrapper: FC<NumberInputWrapperProps> = ({
     value,
     max,
     min,
+    required,
 }) => {
     return (
         <NumberInput
@@ -34,6 +36,7 @@ const NumberInputWrapper: FC<NumberInputWrapperProps> = ({
             value={value === undefined ? undefined : value + ''}
             max={max}
             min={min}
+            required={required}
         >
             <NumberInputField
                 placeholder={placeholder}

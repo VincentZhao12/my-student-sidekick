@@ -3,7 +3,7 @@ import { AddIcon } from '@chakra-ui/icons';
 import { Input } from '@chakra-ui/input';
 import { Container, Heading, Text } from '@chakra-ui/layout';
 import { Tooltip } from '@chakra-ui/tooltip';
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, SyntheticEvent, useEffect, useState } from 'react';
 import { match, useHistory } from 'react-router';
 import { useBibliography } from '../../contexts/BibliographyContext';
 import { CitationData, DateFormat, Name } from '../../utils/BibliographyUtils';
@@ -53,7 +53,8 @@ const ManualCitation: FC<ManualCitationProps> = ({ match }) => {
         setDefaultData(defaultData);
     }, [newCitation, citations, index, match?.params.index]);
 
-    const handleSubmit = () => {
+    const handleSubmit = (e: SyntheticEvent) => {
+        e.preventDefault();
         if (match?.params.index) {
             editCitation &&
                 editCitation(index, {
@@ -83,103 +84,105 @@ const ManualCitation: FC<ManualCitationProps> = ({ match }) => {
         <Container>
             <BackButton />
             <Container centerContent>
-                <Heading>
+                <Heading textAlign="center">
                     {newCitation
                         ? 'Make Edits and Add More Information'
                         : match?.params.index !== undefined
                         ? 'Edit Citation'
                         : 'Cite a Website'}
                 </Heading>
-                <Container marginTop="2vh">
-                    <Text>Article Title</Text>
-                    <Input
-                        onChange={(e) => setTitle(e.target.value)}
-                        placeholder="Title"
-                        defaultValue={defaultData?.title}
-                    />
-                </Container>
-                <Container marginTop="2vh">
-                    <Text justifyContent="center">Author (s)</Text>
-                    {author?.map((authorName, index) => (
-                        <AuthorInput
-                            key={index}
-                            defaultValue={
-                                defaultData?.author &&
-                                defaultData?.author[index]
-                            }
-                            onChange={(name) => {
-                                let changed = author;
-                                changed[index] = name;
-                            }}
-                            onDelete={() => {
-                                let changed = [...author];
-                                changed.splice(index, 1);
-                                setAuthor(changed);
-                            }}
+                <form onSubmit={handleSubmit}>
+                    <Container marginTop="2vh">
+                        <Text>Article Title</Text>
+                        <Input
+                            onChange={(e) => setTitle(e.target.value)}
+                            placeholder="Title"
+                            defaultValue={defaultData?.title}
                         />
-                    ))}
-                    <Tooltip label="Add Author">
-                        <IconButton
-                            icon={<AddIcon />}
-                            aria-label="Add Author"
-                            onClick={() =>
-                                author
-                                    ? setAuthor([
-                                          ...author,
-                                          { first: '', last: '' },
-                                      ])
-                                    : setAuthor([{ first: '', last: '' }])
-                            }
-                            width="inherit"
-                            alignSelf="center"
-                            colorScheme="secondary"
-                            variant="outline"
-                            marginTop="3"
-                        />
-                    </Tooltip>
-                </Container>
+                    </Container>
+                    <Container marginTop="2vh">
+                        <Text justifyContent="center">Author (s)</Text>
+                        {author?.map((authorName, index) => (
+                            <AuthorInput
+                                key={index}
+                                defaultValue={
+                                    defaultData?.author &&
+                                    defaultData?.author[index]
+                                }
+                                onChange={(name) => {
+                                    let changed = author;
+                                    changed[index] = name;
+                                }}
+                                onDelete={() => {
+                                    let changed = [...author];
+                                    changed.splice(index, 1);
+                                    setAuthor(changed);
+                                }}
+                            />
+                        ))}
+                        <Tooltip label="Add Author">
+                            <IconButton
+                                icon={<AddIcon />}
+                                aria-label="Add Author"
+                                onClick={() =>
+                                    author
+                                        ? setAuthor([
+                                              ...author,
+                                              { first: '', last: '' },
+                                          ])
+                                        : setAuthor([{ first: '', last: '' }])
+                                }
+                                width="inherit"
+                                alignSelf="center"
+                                colorScheme="secondary"
+                                variant="outline"
+                                marginTop="3"
+                            />
+                        </Tooltip>
+                    </Container>
 
-                <Container marginTop="2vh">
-                    <Text>Website Name</Text>
-                    <Input
-                        onChange={(e) => setSiteName(e.target.value)}
-                        placeholder="Website Name"
-                        defaultValue={defaultData?.siteName}
-                    />
-                </Container>
-                <Container marginTop="2vh">
-                    <Text>Publisher</Text>
-                    <Input
-                        onChange={(e) => setPublisher(e.target.value)}
-                        placeholder="Publisher"
-                        defaultValue={defaultData?.publisher}
-                    />
-                </Container>
-                <Container marginTop="2vh">
-                    <Text>URL</Text>
-                    <Input
-                        onChange={(e) => setUrl(e.target.value)}
-                        placeholder="URL"
-                        defaultValue={defaultData?.url}
-                    />
-                </Container>
-                <Container marginTop="2vh">
-                    <Text>Date Published</Text>
-                    <DateInput
-                        onChange={(date) => setDate(date)}
-                        defaultValue={defaultData?.date}
-                    />
-                </Container>
-                <Container>
-                    <Button
-                        marginTop="3"
-                        colorScheme="special"
-                        width="inherit"
-                        onClick={handleSubmit}
-                    >
-                        Finish Citation
-                    </Button>
-                </Container>
+                    <Container marginTop="2vh">
+                        <Text>Website Name</Text>
+                        <Input
+                            onChange={(e) => setSiteName(e.target.value)}
+                            placeholder="Website Name"
+                            defaultValue={defaultData?.siteName}
+                        />
+                    </Container>
+                    <Container marginTop="2vh">
+                        <Text>Publisher</Text>
+                        <Input
+                            onChange={(e) => setPublisher(e.target.value)}
+                            placeholder="Publisher"
+                            defaultValue={defaultData?.publisher}
+                        />
+                    </Container>
+                    <Container marginTop="2vh">
+                        <Text>URL</Text>
+                        <Input
+                            onChange={(e) => setUrl(e.target.value)}
+                            placeholder="URL"
+                            defaultValue={defaultData?.url}
+                        />
+                    </Container>
+                    <Container marginTop="2vh">
+                        <Text>Date Published</Text>
+                        <DateInput
+                            onChange={(date) => setDate(date)}
+                            defaultValue={defaultData?.date}
+                        />
+                    </Container>
+                    <Container>
+                        <Button
+                            marginTop="3"
+                            colorScheme="special"
+                            width="inherit"
+                            type={'submit'}
+                        >
+                            Finish Citation
+                        </Button>
+                    </Container>
+                </form>
             </Container>
         </Container>
     );

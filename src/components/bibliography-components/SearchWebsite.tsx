@@ -1,7 +1,7 @@
 import { Button } from '@chakra-ui/button';
 import { Input } from '@chakra-ui/input';
 import { HStack } from '@chakra-ui/react';
-import React, { FC, useState } from 'react';
+import React, { FC, SyntheticEvent, useState } from 'react';
 import { useHistory } from 'react-router';
 import { useBibliography } from '../../contexts/BibliographyContext';
 import { functions } from '../../firebase';
@@ -18,7 +18,8 @@ const SearchWebsite: FC<SearchWebsiteProps> = ({ marginTop }) => {
     const { setNewCitation } = useBibliography();
     const history = useHistory();
 
-    const handleSubmit = async () => {
+    const handleSubmit = async (e: SyntheticEvent) => {
+        e.preventDefault();
         setLoading(true);
 
         const fetchData = functions.httpsCallable('fetchWebsiteInfo');
@@ -103,24 +104,30 @@ const SearchWebsite: FC<SearchWebsiteProps> = ({ marginTop }) => {
     };
 
     return (
-        <HStack
-            width={{
-                base: 'xs',
-                md: 'sm',
-                lg: 'md',
-            }}
-            marginTop={marginTop}
-        >
-            <Input onChange={(e) => setUrl(e.target.value)} placeholder="URL" />
-            <Button
-                colorScheme="special"
-                onClick={handleSubmit}
-                disabled={loading}
-                isLoading={loading}
+        <form onSubmit={handleSubmit}>
+            <HStack
+                width={{
+                    base: 'xs',
+                    md: 'sm',
+                    lg: 'md',
+                }}
+                marginTop={marginTop}
             >
-                Cite
-            </Button>
-        </HStack>
+                <Input
+                    onChange={(e) => setUrl(e.target.value)}
+                    placeholder="URL"
+                    required
+                />
+                <Button
+                    colorScheme="special"
+                    type="submit"
+                    disabled={loading}
+                    isLoading={loading}
+                >
+                    Cite
+                </Button>
+            </HStack>
+        </form>
     );
 };
 

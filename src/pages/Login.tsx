@@ -17,7 +17,7 @@ import {
     CloseButton,
     Container,
 } from '@chakra-ui/react';
-import React, { FC, useState } from 'react';
+import React, { FC, SyntheticEvent, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import firebase from '../firebase';
@@ -31,7 +31,8 @@ const Login: FC<LoginProps> = () => {
     const [error, setError] = useState('');
     const history = useHistory();
 
-    const handleSubmit = () => {
+    const handleSubmit = (e: SyntheticEvent) => {
+        e.preventDefault();
         setError('');
         login(email, pass)
             .then(() => {
@@ -81,44 +82,45 @@ const Login: FC<LoginProps> = () => {
                     p={8}
                     minWidth="xs"
                 >
-                    <Stack spacing={4}>
-                        <FormControl id="email">
-                            <FormLabel>Email address</FormLabel>
-                            <Input
-                                type="email"
-                                bg="inherit"
-                                onChange={(e) => setEmail(e.target.value)}
-                            />
-                        </FormControl>
-                        <FormControl id="password">
-                            <FormLabel>Password</FormLabel>
-                            <Input
-                                type="password"
-                                bg="inherit"
-                                onChange={(e) => setPass(e.target.value)}
-                            />
-                        </FormControl>
-                        <Stack spacing={10}>
-                            <Button
-                                colorScheme="primary"
-                                onClick={handleSubmit}
-                            >
-                                Sign in
-                            </Button>
+                    <form onSubmit={handleSubmit}>
+                        <Stack spacing={4}>
+                            <FormControl id="email">
+                                <FormLabel>Email address</FormLabel>
+                                <Input
+                                    type="email"
+                                    bg="inherit"
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    required
+                                />
+                            </FormControl>
+                            <FormControl id="password">
+                                <FormLabel>Password</FormLabel>
+                                <Input
+                                    type="password"
+                                    bg="inherit"
+                                    required
+                                    onChange={(e) => setPass(e.target.value)}
+                                />
+                            </FormControl>
+                            <Stack spacing={10}>
+                                <Button colorScheme="primary" type={'submit'}>
+                                    Sign in
+                                </Button>
+                            </Stack>
+                            <Stack spacing={10} alignItems="center">
+                                <Text>
+                                    Don't have an account?{' '}
+                                    <StyledLink
+                                        color="special.300"
+                                        as={Link}
+                                        to="/signup"
+                                    >
+                                        Sign Up
+                                    </StyledLink>
+                                </Text>
+                            </Stack>
                         </Stack>
-                        <Stack spacing={10} alignItems="center">
-                            <Text>
-                                Don't have an account?{' '}
-                                <StyledLink
-                                    color="special.300"
-                                    as={Link}
-                                    to="/signup"
-                                >
-                                    Sign Up
-                                </StyledLink>
-                            </Text>
-                        </Stack>
-                    </Stack>
+                    </form>
                 </Box>
             </Stack>
         </VStack>

@@ -80,8 +80,6 @@ const Links = ({ onClose }: { onClose?: () => any }) => (
 const Navbar: FC = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const { loggedIn, logout, currentUser } = useAuth();
-    console.log(currentUser);
-
     return (
         <Box bg={useColorModeValue('gray.200', 'gray.900')} px={4}>
             <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>

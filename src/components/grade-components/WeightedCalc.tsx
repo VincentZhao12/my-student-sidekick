@@ -3,7 +3,7 @@ import { AddIcon, DeleteIcon } from '@chakra-ui/icons';
 import { Container, Text } from '@chakra-ui/layout';
 import { Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/table';
 import { Tooltip } from '@chakra-ui/tooltip';
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, SyntheticEvent, useEffect, useState } from 'react';
 import Card from '../Card';
 import NumberInputWrapper from '../NumberInputWrapper';
 import Instructions from './Instructions';
@@ -17,7 +17,8 @@ const WeightedCalc: FC<WeightedCalcProps> = () => {
     const [grade, setGrade] = useState<number>(100);
     const [show, setShow] = useState<boolean>();
 
-    const calculateGrade = () => {
+    const calculateGrade = (e: SyntheticEvent) => {
+        e.preventDefault();
         let grade = 0;
         let totalWeight = 0;
         categories.forEach((category) => {
@@ -31,67 +32,73 @@ const WeightedCalc: FC<WeightedCalcProps> = () => {
 
     return (
         <Container centerContent width="inherit">
-            <Table width="inherit">
-                <Thead>
-                    <Tr>
-                        <Th>Grade %</Th>
-                        <Th>Weight %</Th>
-                        <Th>
-                            <Instructions title="How do I use this?">
-                                Calculate your grade for a class with a weighted
-                                gradebook. Enter your grades in each weighted
-                                category and how much each category is worth.
-                            </Instructions>
-                        </Th>
-                    </Tr>
-                </Thead>
-                <Tbody>
-                    {categories.map((category, index) => (
-                        <CategoryInput
-                            key={index}
-                            onChange={(category) => {
-                                let changed = categories;
-                                changed[index] = category;
-                                setCategories(changed);
-                            }}
-                            onRemove={() => {
-                                let removed = [...categories];
-                                removed.splice(index, 1);
-                                setCategories(removed);
-                            }}
-                        />
-                    ))}
-                </Tbody>
-            </Table>
-            <Tooltip label="Add Category">
-                <IconButton
-                    icon={<AddIcon />}
-                    aria-label="Add Category"
+            <form onSubmit={calculateGrade}>
+                <Table width="inherit">
+                    <Thead>
+                        <Tr>
+                            <Th>Grade %</Th>
+                            <Th>Weight %</Th>
+                            <Th>
+                                <Instructions title="How do I use this?">
+                                    Calculate your grade for a class with a
+                                    weighted gradebook. Enter your grades in
+                                    each weighted category and how much each
+                                    category is worth.
+                                </Instructions>
+                            </Th>
+                        </Tr>
+                    </Thead>
+                    <Tbody>
+                        {categories.map((category, index) => (
+                            <CategoryInput
+                                key={index}
+                                onChange={(category) => {
+                                    let changed = categories;
+                                    changed[index] = category;
+                                    setCategories(changed);
+                                }}
+                                onRemove={() => {
+                                    let removed = [...categories];
+                                    removed.splice(index, 1);
+                                    setCategories(removed);
+                                }}
+                            />
+                        ))}
+                    </Tbody>
+                </Table>
+                <Tooltip label="Add Category">
+                    <IconButton
+                        icon={<AddIcon />}
+                        aria-label="Add Category"
+                        width={{
+                            base: 'xs',
+                            md: 'sm',
+                            lg: 'md',
+                        }}
+                        colorScheme="secondary"
+                        variant="outline"
+                        onClick={() =>
+                            setCategories([
+                                ...categories,
+                                { grade: 0, weight: 0 },
+                            ])
+                        }
+                    />
+                </Tooltip>
+
+                <Button
+                    marginTop="3"
+                    colorScheme="primary"
                     width={{
                         base: 'xs',
                         md: 'sm',
                         lg: 'md',
                     }}
-                    colorScheme="secondary"
-                    variant="outline"
-                    onClick={() =>
-                        setCategories([...categories, { grade: 0, weight: 0 }])
-                    }
-                />
-            </Tooltip>
-
-            <Button
-                marginTop="3"
-                colorScheme="primary"
-                width={{
-                    base: 'xs',
-                    md: 'sm',
-                    lg: 'md',
-                }}
-                onClick={calculateGrade}
-            >
-                Calculate
-            </Button>
+                    type="submit"
+                >
+                    Calculate
+                </Button>
+            </form>
 
             {show && (
                 <div style={{ marginTop: '3vh' }}>
@@ -132,6 +139,7 @@ const CategoryInput: FC<CategoryInputProps> = ({ onChange, onRemove }) => {
                             ? setCategory({ ...category, grade: num })
                             : setCategory({ grade: num, weight: 0 })
                     }
+                    required
                 />
             </Td>
             <Td>
@@ -141,6 +149,7 @@ const CategoryInput: FC<CategoryInputProps> = ({ onChange, onRemove }) => {
                             ? setCategory({ ...category, weight: num })
                             : setCategory({ weight: num, grade: 0 })
                     }
+                    required
                 />
             </Td>
             <Td>
