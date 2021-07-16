@@ -23,5 +23,3 @@ yarn-debug.log*
 yarn-error.log*
 firebase-debug.log*
 *.cache
-
-public/firebase-messaging-sw.js
