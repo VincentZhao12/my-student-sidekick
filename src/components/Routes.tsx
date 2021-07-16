@@ -1,7 +1,7 @@
 import { useToast } from '@chakra-ui/react';
 import React, { FC } from 'react';
 import { Route } from 'react-router-dom';
-import { messaging } from '../firebase';
+import firebase, { messaging } from '../firebase';
 import Bibliography from '../pages/Bibliography';
 import GradeCalculator from '../pages/GradeCalculator';
 import Homepage from '../pages/Hompage';
@@ -16,15 +16,16 @@ export interface RoutesProps {}
 
 const Routes: FC<RoutesProps> = () => {
     const toast = useToast();
-    messaging.onMessage((message) => {
-        toast({
-            title: message.notification.title,
-            description: message.notification.body,
-            status: 'info',
-            duration: 9000,
-            isClosable: true,
+    if (firebase.messaging.isSupported())
+        messaging?.onMessage((message) => {
+            toast({
+                title: message.notification.title,
+                description: message.notification.body,
+                status: 'info',
+                duration: 9000,
+                isClosable: true,
+            });
         });
-    });
     return (
         <>
             <Route exact path="/" component={Homepage} />

@@ -49,7 +49,7 @@ const Schedule: FC<ScheduleProps> = () => {
             const setUpNotifications = async () => {
                 try {
                     const [token, userDoc] = await Promise.all([
-                        messaging.getToken(),
+                        messaging?.getToken(),
                         db.collection('users').doc(currentUser.uid).get(),
                     ]);
 
@@ -61,7 +61,7 @@ const Schedule: FC<ScheduleProps> = () => {
                             .update({
                                 notificationTokens: [token],
                             });
-                    else if (tokens.indexOf(token) === -1) {
+                    else if (token && tokens.indexOf(token) === -1) {
                         db.collection('users')
                             .doc(currentUser.uid)
                             .update({

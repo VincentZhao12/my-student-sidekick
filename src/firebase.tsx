@@ -29,4 +29,5 @@ export default firebase;
 export const db: firebase.firestore.Firestore = firebase.firestore();
 export const auth: firebase.auth.Auth = firebase.auth();
 export const functions: firebase.functions.Functions = firebase.functions();
-export const messaging: firebase.messaging.Messaging = firebase.messaging();
+export const messaging: firebase.messaging.Messaging | undefined =
+    firebase.messaging.isSupported() ? firebase.messaging() : undefined;
