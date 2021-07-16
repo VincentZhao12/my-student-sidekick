@@ -42,7 +42,6 @@ const GradeCalculator: FC<GradeCalculatorProps> = () => {
                         <Tab>Assignment Based</Tab>
                         <Tab>Needed Final Score</Tab>
                         <Tab>Needed Test Score</Tab>
-                        <Tab>GPA Calculator</Tab>
                     </TabList>
                     <TabPanels>
                         <TabPanel>

@@ -15,11 +15,14 @@ import {
     Icon,
     Badge,
     Avatar,
+    Spacer,
+    Text,
 } from '@chakra-ui/react';
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { ReactComponent as Logo } from '../images/logo.svg';
+import { IoExitOutline } from 'react-icons/io5';
 
 type LinkData = {
     to: string;
@@ -76,7 +79,8 @@ const Links = ({ onClose }: { onClose?: () => any }) => (
 
 const Navbar: FC = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
-    const { loggedIn, logout } = useAuth();
+    const { loggedIn, logout, currentUser } = useAuth();
+    console.log(currentUser);
 
     return (
         <Box bg={useColorModeValue('gray.200', 'gray.900')} px={4}>
@@ -112,8 +116,29 @@ const Navbar: FC = () => {
                                     backgroundColor="gray.600"
                                 />
                                 <MenuList>
+                                    <MenuItem
+                                        cursor="default!important"
+                                        isDisabled={true}
+                                        _disabled={{ color: 'white' }}
+                                    >
+                                        <Text fontWeight="bold">
+                                            {currentUser?.displayName}
+                                        </Text>
+                                    </MenuItem>
+                                    <hr />
                                     <MenuItem onClick={logout}>
-                                        Log Out
+                                        <Flex
+                                            width="inherit"
+                                            justifyContent="center"
+                                            alignItems="center"
+                                        >
+                                            <Text>Log Out</Text>
+                                            <Spacer />
+                                            <Icon
+                                                as={IoExitOutline}
+                                                height="100%"
+                                            />
+                                        </Flex>
                                     </MenuItem>
                                 </MenuList>
                             </Menu>

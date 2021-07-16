@@ -16,7 +16,7 @@ import {
     AlertDescription,
     CloseButton,
 } from '@chakra-ui/react';
-import React, { FC, useState } from 'react';
+import React, { FC, SyntheticEvent, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import firebase, { db } from '../firebase';
@@ -31,22 +31,31 @@ const Signup: FC<SignupProps> = () => {
     const { signup } = useAuth();
     const [error, setError] = useState('');
     const history = useHistory();
+    const [loading, setLoading] = useState<boolean>(false);
 
-    const handleSubmit = () => {
+    const handleSubmit = (e: SyntheticEvent) => {
+        e.preventDefault();
         setError('');
-        if (pass !== passConf)
+        setLoading(true);
+        if (pass !== passConf) {
             setError("Your password and password confirmation don't match.");
+            return;
+        }
+
         signup(email, pass)
             .then((user: firebase.auth.UserCredential) => {
+                user.user?.updateProfile({ displayName: screenName });
                 db.collection('users')
                     .doc(user.user ? user.user.uid : '')
                     .set({
                         screenName,
                         id: user.user ? user.user.uid : '',
                     });
+                setLoading(true);
                 history.push('/');
             })
             .catch((error: firebase.auth.AuthError) => {
+                setLoading(true);
                 if (error.code === 'auth/invalid-email')
                     setError('You did not enter a valid E-mail');
                 else if (error.code === 'auth/weak-password')
@@ -66,9 +75,14 @@ const Signup: FC<SignupProps> = () => {
         >
             {error && (
                 <Stack align={'center'}>
-                    <Alert status="error" width={'md'} alignItems="center">
+                    <Alert
+                        status="error"
+                        width={'fit-content'}
+                        paddingRight="10"
+                        alignItems="center"
+                    >
                         <AlertIcon />
-                        <AlertTitle mr={2}>Error Signing Up!</AlertTitle>
+                        <AlertTitle mr={2}>Failed to Sign Up!</AlertTitle>
                         <AlertDescription>{error}</AlertDescription>
                         <CloseButton
                             position="absolute"
@@ -90,59 +104,69 @@ const Signup: FC<SignupProps> = () => {
                     p={8}
                     minWidth="xs"
                 >
-                    <Stack spacing={4}>
-                        <FormControl id="screen-name">
-                            <FormLabel>Screen Name</FormLabel>
-                            <Input
-                                bg="inherit"
-                                onChange={(e) => setScreenName(e.target.value)}
-                            />
-                        </FormControl>
-                        <FormControl id="email">
-                            <FormLabel>Email address</FormLabel>
-                            <Input
-                                type="email"
-                                bg="inherit"
-                                onChange={(e) => setEmail(e.target.value)}
-                            />
-                        </FormControl>
-                        <FormControl id="password">
-                            <FormLabel>Password</FormLabel>
-                            <Input
-                                type="password"
-                                bg="inherit"
-                                onChange={(e) => setPass(e.target.value)}
-                            />
-                        </FormControl>
-                        <FormControl id="password-conf">
-                            <FormLabel>Password Conformation</FormLabel>
-                            <Input
-                                type="password"
-                                bg="inherit"
-                                onChange={(e) => setPassConf(e.target.value)}
-                            />
-                        </FormControl>
-                        <Stack spacing={10}>
-                            <Button
-                                colorScheme="primary"
-                                onClick={handleSubmit}
-                            >
-                                Sign up
-                            </Button>
-                        </Stack>
-                        <Stack spacing={10} alignItems="center">
-                            <Text>
-                                Already have an account?{' '}
-                                <StyledLink
-                                    color="special.300"
-                                    as={Link}
-                                    to="/login"
+                    <form onSubmit={handleSubmit}>
+                        <Stack spacing={4}>
+                            <FormControl id="screen-name">
+                                <FormLabel>Screen Name</FormLabel>
+                                <Input
+                                    required
+                                    bg="inherit"
+                                    onChange={(e) =>
+                                        setScreenName(e.target.value)
+                                    }
+                                />
+                            </FormControl>
+                            <FormControl id="email">
+                                <FormLabel>Email address</FormLabel>
+                                <Input
+                                    required
+                                    type="email"
+                                    bg="inherit"
+                                    onChange={(e) => setEmail(e.target.value)}
+                                />
+                            </FormControl>
+                            <FormControl id="password">
+                                <FormLabel>Password</FormLabel>
+                                <Input
+                                    required
+                                    type="password"
+                                    bg="inherit"
+                                    onChange={(e) => setPass(e.target.value)}
+                                />
+                            </FormControl>
+                            <FormControl id="password-conf">
+                                <FormLabel>Password Conformation</FormLabel>
+                                <Input
+                                    type="password"
+                                    bg="inherit"
+                                    onChange={(e) =>
+                                        setPassConf(e.target.value)
+                                    }
+                                />
+                            </FormControl>
+                            <Stack spacing={10}>
+                                <Button
+                                    type="submit"
+                                    colorScheme="primary"
+                                    isLoading={loading}
                                 >
-                                    Log In
-                                </StyledLink>
-                            </Text>
+                                    Sign up
+                                </Button>
+                            </Stack>
+                            <Stack spacing={10} alignItems="center">
+                                <Text>
+                                    Already have an account?{' '}
+                                    <StyledLink
+                                        color="special.300"
+                                        as={Link}
+                                        to="/login"
+                                    >
+                                        Log In
+                                    </StyledLink>
+                                </Text>
+                            </Stack>
                         </Stack>
-                    </Stack>
+                    </form>
                 </Box>
             </Stack>
         </VStack>

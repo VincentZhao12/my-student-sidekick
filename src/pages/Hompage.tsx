@@ -10,7 +10,7 @@ import {
 } from '@chakra-ui/react';
 import React, { ReactElement } from 'react';
 import { FC } from 'react';
-import { FcDocument, FcCalculator } from 'react-icons/fc';
+import { FcDocument, FcCalculator, FcCalendar } from 'react-icons/fc';
 import { GoMarkGithub } from 'react-icons/go';
 import { Link } from 'react-router-dom';
 import { ReactComponent as Pencil } from '../images/pencil.svg';
@@ -19,7 +19,7 @@ export interface HomepageProps {}
 
 const Homepage: FC<HomepageProps> = () => {
     return (
-        <Container maxW={'4xl'}>
+        <Container maxW={'5xl'}>
             <Stack
                 as={Box}
                 textAlign={'center'}
@@ -41,7 +41,12 @@ const Homepage: FC<HomepageProps> = () => {
                     on this website. This website is currently in development so
                     any feedback and suggestions would be very appreciated.
                     Email feedback and suggestions to{' '}
-                    <Text as={'span'} color="primary.300">
+                    <Text
+                        as={'a'}
+                        color="primary.300"
+                        textDecoration="underline"
+                        href="mailto:mystudentsidekick@gmail.com"
+                    >
                         mystudentsidekick@gmail.com
                     </Text>{' '}
                     or make an issue on{' '}
@@ -113,7 +118,7 @@ const FeatureLink = ({ title, text, icon, to }: FeatureProps) => {
 const SimpleThreeColumns = () => {
     return (
         <Box p={4}>
-            <SimpleGrid columns={{ base: 1, md: 4 }} spacing={10}>
+            <SimpleGrid columns={{ base: 1, md: 5 }} spacing={10}>
                 <Feature
                     icon={<Icon as={FcCalculator} w={10} h={10} />}
                     title={'Grade Calculators'}
@@ -137,6 +142,14 @@ const SimpleThreeColumns = () => {
                         'Use our simple note taker to quickly take some notes and save them to your computer. '
                     }
                     to="/notes"
+                />
+                <Feature
+                    icon={<Icon as={FcCalendar} w={10} h={10} />}
+                    title={'Schedule'}
+                    text={
+                        'Create a schedule using this app to keep track of your events, and get notified before your events start. '
+                    }
+                    to="/schedule"
                 />
                 <FeatureLink
                     icon={
