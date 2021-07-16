@@ -1,0 +1,11 @@
+.citation {
+    font-family: 'Times New Roman', Tinos, 'Liberation Serif', serif;
+    margin-left: 1cm;
+    text-indent: -0.7cm;
+    padding: 0px 5px;
+    display: inline-block;
+    word-break: break-word;
+    line-height: 180%;
+    user-select: none;
+    font-size: 12pt;
+}
