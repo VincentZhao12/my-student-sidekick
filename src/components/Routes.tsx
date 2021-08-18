@@ -7,6 +7,7 @@ import GradeCalculator from '../pages/GradeCalculator';
 import Homepage from '../pages/Hompage';
 import Login from '../pages/Login';
 import Notes from '../pages/Notes';
+import Quiz from '../pages/Quiz';
 import Schedule from '../pages/Schedule';
 import Signup from '../pages/Signup';
 import CiteWebsite from './bibliography-components/CiteWebsite';
@@ -50,6 +51,7 @@ const Routes: FC<RoutesProps> = () => {
                 component={ManualCitation}
             />
             <Route exact path="/schedule" component={Schedule} />
+            <Route exact path="/quizzes" component={Quiz} />
         </>
     );
 };
