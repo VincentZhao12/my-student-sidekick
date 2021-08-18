@@ -51,11 +51,11 @@ const Signup: FC<SignupProps> = () => {
                         screenName,
                         id: user.user ? user.user.uid : '',
                     });
-                setLoading(true);
+                setLoading(false);
                 history.push('/');
             })
             .catch((error: firebase.auth.AuthError) => {
-                setLoading(true);
+                setLoading(false);
                 if (error.code === 'auth/invalid-email')
                     setError('You did not enter a valid E-mail');
                 else if (error.code === 'auth/weak-password')
