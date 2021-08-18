@@ -30,15 +30,19 @@ const Login: FC<LoginProps> = () => {
     const { login } = useAuth();
     const [error, setError] = useState('');
     const history = useHistory();
+    const [loading, setLoading] = useState<boolean>(false);
 
     const handleSubmit = (e: SyntheticEvent) => {
         e.preventDefault();
+        setLoading(true);
         setError('');
         login(email, pass)
             .then(() => {
+                setLoading(false);
                 history.push('/');
             })
             .catch((error: firebase.auth.AuthError) => {
+                setLoading(false);
                 if (error.code === 'auth/invalid-email')
                     setError('You did not enter a valid Email');
                 else if (error.code === 'auth/user-not-found')
@@ -103,7 +107,11 @@ const Login: FC<LoginProps> = () => {
                                 />
                             </FormControl>
                             <Stack spacing={10}>
-                                <Button colorScheme="primary" type={'submit'}>
+                                <Button
+                                    colorScheme="primary"
+                                    type={'submit'}
+                                    isLoading={loading}
+                                >
                                     Sign in
                                 </Button>
                             </Stack>
